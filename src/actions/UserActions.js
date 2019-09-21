@@ -76,17 +76,17 @@ export const usereditPix = image => {
   };
 };
 
-export const updatePix = (photos, id) => {
-  let formData = {
-    photos,
+export const updatePix = (picture, id) => {
+  /**let formData = {
+    picture,
     id
   };
-  console.log(photos);
+  console.log(picture);*/
 
-  /**const formData = new FormData();
-  formData.append('photos', photos);
+  const formData = new FormData();
+  formData.append('picture', picture);
   formData.append('id', id);
-  console.log(formData);*/
+  console.log(formData);
 
   /**let dataToServer = new FormData();
   dataToServer.append('id', id);
