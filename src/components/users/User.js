@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios'
 import {
   getuserInfo,
   usereditValue,
@@ -53,54 +54,34 @@ class User extends Component {
     e.preventDefault();
   };
 
-  /**onUserPix = e => {
-    const file = e.target.files[0];
-    this.props.usereditPix(file);
-  };*/
+  state = {
+    image: null
+  };
 
-  /**onUserPix2 = () => {
-    let picFormData = new FormData();
-    picFormData.append('photos', this.userPic.files[0]);
+  handleImageChange = (e) => {
+    this.setState({
+      image: e.target.files[0]
+    })
+  };
 
-    picFormData.append('id', this.props.user.id);
-    return picFormData;
-  };*/
-
-  /**onUserPix = e => {
-    let files = e.target.files;
-    let reader = new FileReader();
-    reader.readAsDataURL(files[0]);
-    reader.onload = e => {
-      this.props.usereditPix(e.target.result);
-    };
-  };*/
-
-  /**proPix = e => {
-    const { id } = this.props.user;
-    const { userpix } = this.props;
-    this.props.updatePix(userpix, id);
-
+  handleSubmit = (e) => {
     e.preventDefault();
-  };*/
-
-  /**handleImageUpload = () => {
-    let widget = window.cloudinary.createUploadWidget(
-      {
-        cloudName: 'exampaperonline',
-        uploadPreset: 'axgm909r',
-        maxFileSize: 100000
-      },
-      async function(error, result) {
-        //
-        if (result && result.event === 'success') {
-          let ourURL = await result.info.secure_url;
-          this.props.updatePix(ourURL);
-        }
+    const { id } = this.props.user;
+    console.log(id);
+    let form_data = new FormData();
+    form_data.append('picture', this.state.image, this.state.image.name);
+    form_data.append('id', id);
+    let url = 'https://pastquestions.xyz/api/v1/user/edit';
+    axios.post(url, form_data, {
+      headers: {
+        'content-type': 'multipart/form-data',
       }
-    );
-
-    widget.open();
-  };*/
+    })
+        .then(res => {
+          console.log(res.data);
+        })
+        .catch(err => console.log(err))
+  };
 
   render() {
     const { singleuser, singleuserdocs, prev, next } = this.props;
@@ -160,18 +141,13 @@ class User extends Component {
                     </button>
                   </Link>
                 </div>
-                <form className="contact-form">
+                <form className="contact-form" onSubmit={this.handleSubmit}>
                   <input
                     type="file"
                     name="userpix"
-                    onChange={this.onUserPix.bind(this)}
+                    onChange={this.handleImageChange}
                   />
-                  {/*<input
-                    ref={ref => (this.userPic = ref)}
-                    type="file"
-                    name="userpix"
-                  />*/}
-                  <button onClick={this.proPix.bind(this)}>upload</button>
+                  <button type={`submit`}>upload</button>
                 </form>
               </div>
 
