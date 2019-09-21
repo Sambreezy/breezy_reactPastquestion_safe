@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios'
+import axios from 'axios';
 import {
   getuserInfo,
   usereditValue,
@@ -58,33 +58,40 @@ class User extends Component {
     image: null
   };
 
-  handleImageChange = (e) => {
+  handleImageChange = e => {
     this.setState({
       image: e.target.files[0]
-    })
+    });
   };
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault();
     const { id } = this.props.user;
     console.log(id);
     let form_data = new FormData();
-    form_data.append('picture', this.state.image, this.state.image.name);
+    form_data.append('photos[]', this.state.image, this.state.image.name);
     form_data.append('id', id);
     let url = 'https://pastquestions.xyz/api/v1/user/edit';
-    axios.post(url, form_data, {
-      headers: {
-        'content-type': 'multipart/form-data',
-      }
-    })
-        .then(res => {
-          console.log(res.data);
-        })
-        .catch(err => console.log(err))
+    axios
+      .post(url, form_data, {
+        headers: {
+          'content-type': 'multipart/form-data'
+        }
+      })
+      .then(res => {
+        console.log(res.data);
+        this.props.getuserInfo(id);
+      })
+      .catch(err => console.log(err));
   };
 
   render() {
     const { singleuser, singleuserdocs, prev, next } = this.props;
+
+    let singleuserpicturename = this.props.singleuserpicturename.replace(
+      'public/profile/',
+      'https://pastquestions.xyz/storage/profile/'
+    );
 
     return (
       <div className="profile-page sidebar-collapse">
@@ -101,18 +108,16 @@ class User extends Component {
                 <div className="col-md-6 ml-auto mr-auto">
                   <div className="profile">
                     <div className="avatar">
-                      <a
-                        href="../../assets/img/faces/christian.jpg"
-                        target="self"
-                      >
+                      <a href={singleuserpicturename} target="self">
                         <img
-                          src="../assets/img/faces/christian.jpg"
+                          src={singleuserpicturename}
                           alt="Circle"
-                          className="img-raised rounded-circle img-fluid"
+                          className="img-raised rounded-circle"
+                          height="160"
+                          width="180"
                         />
                       </a>
                       <i
-                        onClick={this.handleImageUpload}
                         style={{
                           position: 'relative',
                           bottom: 13,
@@ -143,9 +148,11 @@ class User extends Component {
                 </div>
                 <form className="contact-form" onSubmit={this.handleSubmit}>
                   <input
+                    id="uploadpix"
                     type="file"
                     name="userpix"
                     onChange={this.handleImageChange}
+                    accept="image/*"
                   />
                   <button type={`submit`}>upload</button>
                 </form>
@@ -261,6 +268,7 @@ const mapStateToProps = state => ({
   user: state.login.user,
   userpix: state.user.userpix,
   singleuser: state.user.singleuser,
+  singleuserpicturename: state.user.singleuserpicturename,
   singleuserdocs: state.user.singleuserdocs,
   prev: state.uploadpquestion.prev,
   next: state.uploadpquestion.next

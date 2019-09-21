@@ -7,7 +7,8 @@ const initialState = {
   singleuserid: '',
   singleuser: {},
   singleuserdocs: [],
-  userpix: []
+  userpix: [],
+  singleuserpicturename: ''
 };
 
 export default function(state = initialState, action) {
@@ -16,6 +17,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         singleuser: action.payload,
+        singleuserpicturename: action.payload.picture,
         singleuserid: action.payload.id,
         singleusername: action.payload.name,
         singleuserphone: action.payload.phone,

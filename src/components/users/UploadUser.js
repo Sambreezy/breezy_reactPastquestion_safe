@@ -14,6 +14,11 @@ class UploadUser extends Component {
   render() {
     const { singleuser, singleuserdocs, prev, next } = this.props;
 
+    let singleuserpicturename = this.props.singleuserpicturename.replace(
+      'public/profile/',
+      'https://pastquestions.xyz/storage/profile/'
+    );
+
     return (
       <div className="profile-page sidebar-collapse">
         <div
@@ -29,14 +34,13 @@ class UploadUser extends Component {
                 <div className="col-md-6 ml-auto mr-auto">
                   <div className="profile">
                     <div className="avatar">
-                      <a
-                        href="../../assets/img/faces/christian.jpg"
-                        target="self"
-                      >
+                      <a href={singleuserpicturename} target="self">
                         <img
-                          src="../assets/img/faces/christian.jpg"
+                          src={singleuserpicturename}
                           alt="Circle"
-                          className="img-raised rounded-circle img-fluid"
+                          className="img-raised rounded-circle"
+                          height="160"
+                          width="180"
                         />
                       </a>
                     </div>
@@ -134,6 +138,7 @@ const mapStateToProps = state => ({
   singleitem: state.uploadpquestion.singleitem,
   userpix: state.user.userpix,
   singleuser: state.user.singleuser,
+  singleuserpicturename: state.user.singleuserpicturename,
   singleuserdocs: state.user.singleuserdocs,
   prev: state.uploadpquestion.prev,
   next: state.uploadpquestion.next
