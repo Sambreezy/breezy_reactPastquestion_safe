@@ -2,8 +2,8 @@ import {
   GET_USER,
   USEREDIT_VALUE,
   UPDATE_USER,
-  UPDATE_PIX,
-  USER_EDITPIX
+  USER_EDITPIX,
+  UPDATE_PIX
 } from './types';
 import axios from 'axios';
 import Swal from 'sweetalert2';
@@ -67,65 +67,40 @@ export const updateUser = (name, phone, description, id) => {
   };
 };
 
-export const usereditPix = image => {
+export const usereditPix = files => {
   return dispatch => {
     dispatch({
       type: USER_EDITPIX,
-      payload: image
+      payload: files
     });
   };
 };
 
-export const updatePix = (picture, id) => {
-  /**let formData = {
-    picture,
-    id
-  };
-  console.log(picture);*/
-
-  const formData = new FormData();
-  formData.append('picture', picture);
-  formData.append('id', id);
-  console.log(formData);
-
-  /**let dataToServer = new FormData();
-  dataToServer.append('id', id);
-  dataToServer.append('photos', photos);
-  console.log(dataToServer);*/
-
-  return dispatch => {
-    axios({
-      method: 'post',
-      url: 'https://pastquestions.xyz/api/v1/user/edit',
-      data: formData,
-      config: { header: { 'Content-Type': 'multipart/form-data' } }
-    })
-      .then(res => {
-        dispatch({
-          type: UPDATE_PIX,
-          payload: res.data
-        });
-        if (res.data) {
-          console.log(res.data.message);
-        }
-      })
-      .catch(err => console.log(err, 'i am err'));
-  };
-};
-
-/**export const updatePix = photo => {
+export const updatePix = (form_data, id) => {
   return dispatch => {
     axios
-      .post('https://pastquestions.xyz/api/v1/user/edit', { img_url: photo })
+      .post('https://pastquestions.xyz/api/v1/user/edit', form_data, {
+        headers: {
+          'content-type': 'multipart/form-data'
+        }
+      })
       .then(res => {
         dispatch({
           type: UPDATE_PIX,
-          payload: res.data
+          payload: null
         });
-        if (res.data) {
-          console.log(res.data.message);
-        }
+        dispatch(getuserInfo(id));
+        console.log(res.data);
       })
-      .catch(err => console.log(err, 'i am err'));
+      .catch(err => {
+        Swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: err.response
+            ? err.response.data.message
+            : 'Something went wrong',
+          confirmButtonText: 'Ok'
+        });
+      });
   };
-};*/
+};

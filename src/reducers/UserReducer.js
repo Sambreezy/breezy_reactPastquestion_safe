@@ -1,4 +1,9 @@
-import { GET_USER, USEREDIT_VALUE, USER_EDITPIX } from '../actions/types';
+import {
+  GET_USER,
+  USEREDIT_VALUE,
+  USER_EDITPIX,
+  UPDATE_PIX
+} from '../actions/types';
 
 const initialState = {
   singleusername: '',
@@ -7,7 +12,7 @@ const initialState = {
   singleuserid: '',
   singleuser: {},
   singleuserdocs: [],
-  userpix: [],
+  userpix: null,
   singleuserpicturename: ''
 };
 
@@ -32,6 +37,13 @@ export default function(state = initialState, action) {
       };
 
     case USER_EDITPIX:
+      console.log(action.payload);
+      return {
+        ...state,
+        userpix: action.payload
+      };
+
+    case UPDATE_PIX:
       return {
         ...state,
         userpix: action.payload

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+//import axios from 'axios';
 import {
   getuserInfo,
   usereditValue,
@@ -33,28 +33,22 @@ class User extends Component {
     e.preventDefault();
   };
 
-  onUserPix = e => {
-    let files = e.target.files || e.dataTransfer.files;
-    if (!files.length) return;
-    this.createImage(files[0]);
-  };
-  createImage = file => {
-    let reader = new FileReader();
-    reader.onload = e => {
-      this.props.usereditPix(e.target.result);
-    };
-    reader.readAsDataURL(file);
+  handleImageChange = e => {
+    let files = e.target.files[0];
+    this.props.usereditPix(files);
   };
 
-  proPix = e => {
+  handleSubmit = e => {
+    e.preventDefault();
     const { id } = this.props.user;
     const { userpix } = this.props;
-    this.props.updatePix(userpix, id);
-
-    e.preventDefault();
+    let form_data = new FormData();
+    form_data.append('photos[]', userpix, userpix.name);
+    form_data.append('id', id);
+    this.props.updatePix(form_data, id);
   };
 
-  state = {
+  /**state = {
     image: null
   };
 
@@ -62,9 +56,9 @@ class User extends Component {
     this.setState({
       image: e.target.files[0]
     });
-  };
+  };*/
 
-  handleSubmit = e => {
+  /** handleSubmit = e => {
     e.preventDefault();
     const { id } = this.props.user;
     console.log(id);
@@ -83,12 +77,19 @@ class User extends Component {
         this.props.getuserInfo(id);
       })
       .catch(err => console.log(err));
-  };
+  };*/
 
   render() {
-    const { singleuser, singleuserdocs, prev, next } = this.props;
+    const {
+      singleuser,
+      singleuserdocs,
+      prev,
+      next,
+      userpix,
+      singleuserpicturename
+    } = this.props;
 
-    let singleuserpicturename = this.props.singleuserpicturename.replace(
+    let singleusername = singleuserpicturename.replace(
       'public/profile/',
       'https://pastquestions.xyz/storage/profile/'
     );
@@ -108,9 +109,9 @@ class User extends Component {
                 <div className="col-md-6 ml-auto mr-auto">
                   <div className="profile">
                     <div className="avatar">
-                      <a href={singleuserpicturename} target="self">
+                      <a href={singleusername} target="self">
                         <img
-                          src={singleuserpicturename}
+                          src={singleusername}
                           alt="Circle"
                           className="img-raised rounded-circle"
                           height="160"
@@ -125,8 +126,16 @@ class User extends Component {
                           cursor: 'pointer'
                         }}
                         className="fa fa-camera fa-lg"
-                      />
+                      ></i>
                     </div>
+                    <form className="contact-form">
+                      <input
+                        type="file"
+                        name="userpix"
+                        onChange={this.handleImageChange}
+                        accept="image/*"
+                      />
+                    </form>
                     <div className="name">
                       <h3 className="title">{singleuser.name}</h3>
                       <h6>{singleuser.phone}</h6>
@@ -146,16 +155,19 @@ class User extends Component {
                     </button>
                   </Link>
                 </div>
-                <form className="contact-form" onSubmit={this.handleSubmit}>
-                  <input
-                    id="uploadpix"
-                    type="file"
-                    name="userpix"
-                    onChange={this.handleImageChange}
-                    accept="image/*"
-                  />
-                  <button type={`submit`}>upload</button>
-                </form>
+
+                {userpix == null ? (
+                  ''
+                ) : (
+                  <div id="buttons" class="cd-section">
+                    <button
+                      onClick={this.handleSubmit}
+                      class="btn btn-primary btn-sm"
+                    >
+                      Save Profile Picture
+                    </button>
+                  </div>
+                )}
               </div>
 
               <div className="row">

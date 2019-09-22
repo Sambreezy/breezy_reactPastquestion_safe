@@ -38,8 +38,10 @@ class Header extends Component {
               className="navbar-toggler"
               type="button"
               data-toggle="collapse"
+              aria-controls="openNav"
               aria-expanded="false"
               aria-label="Toggle navigation"
+              data-target="#openNav"
             >
               <span className="sr-only">Toggle navigation</span>
               <span className="navbar-toggler-icon" />
@@ -47,7 +49,7 @@ class Header extends Component {
               <span className="navbar-toggler-icon" />
             </button>
           </div>
-          <div className="collapse navbar-collapse">
+          <div className="collapse navbar-collapse" id="openNav">
             {isAuthenticated ? (
               <ul className="navbar-nav ml-auto">
                 <li className="nav-item">

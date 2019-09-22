@@ -179,9 +179,10 @@ class SingleItem extends Component {
                         <div className="col-md-2.5 ml-auto mr-auto">
                           <a
                             key={singledoc.id}
-                            to={`https://pastquestions.xyz/storage/documents/${singledoc.doc_name}`}
+                            href={`https://pastquestions.xyz/storage/documents/${singledoc.doc_name}`}
                             style={{ width: 330 }}
                             className="btn btn-success"
+                            target="blank"
                             download
                           >
                             <span className="fa fa-download" /> Download{' '}
@@ -315,7 +316,7 @@ class SingleItem extends Component {
                                   <div className="row">
                                     <div className="col-md-2">
                                       <img
-                                        src="../../assets/img/faces/christian.jpg"
+                                        src={singlecomment.user_picture}
                                         alt="Circle"
                                         className="rounded-circle"
                                         style={{ height: 40, width: 40 }}
