@@ -158,6 +158,7 @@ class Signup extends Component {
                           )
                         }
                         className="btn btn-primary btn-link btn-wd btn-lg"
+                        style={{ backgroundColor: '#9c27b0', color: '#fff' }}
                       >
                         Sign Up
                       </div>

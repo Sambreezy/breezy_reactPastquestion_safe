@@ -56,7 +56,10 @@ class ChangePassword extends Component {
                       className="footer text-center"
                       style={{ marginBottom: 20 }}
                     >
-                      <div className="btn btn-primary btn-link btn-wd btn-lg">
+                      <div
+                        className="btn btn-primary btn-link btn-wd btn-lg"
+                        style={{ backgroundColor: '#9c27b0', color: '#fff' }}
+                      >
                         Send
                       </div>
                     </div>

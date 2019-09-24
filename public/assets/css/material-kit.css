@@ -11440,7 +11440,7 @@ label {
     display: none;
   }
   .pagination.pagination-info .page-item:nth-of-type(2) {
-    display: none;
+    display: block;
   }
   .main.main-raised {
     margin-top: -30px;

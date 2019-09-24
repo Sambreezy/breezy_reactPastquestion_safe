@@ -92,6 +92,7 @@ class Login extends Component {
                       <div
                         onClick={e => this.props.loginUser(email, password)}
                         className="btn btn-primary btn-link btn-wd btn-lg"
+                        style={{ backgroundColor: '#9c27b0', color: '#fff' }}
                       >
                         Log In
                       </div>

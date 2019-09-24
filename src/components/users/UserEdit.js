@@ -148,6 +148,7 @@ class UserEdit extends Component {
                         <div
                           onClick={this.update.bind(this)}
                           className="btn btn-primary btn-link btn-wd btn-lg"
+                          style={{ backgroundColor: '#9c27b0', color: '#fff' }}
                         >
                           Update
                         </div>
@@ -234,6 +235,7 @@ class UserEdit extends Component {
                         <div
                           onClick={this.save.bind(this)}
                           className="btn btn-primary btn-link btn-wd btn-lg"
+                          style={{ backgroundColor: '#9c27b0', color: '#fff' }}
                         >
                           Save
                         </div>

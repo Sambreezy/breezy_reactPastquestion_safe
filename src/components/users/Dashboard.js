@@ -6,7 +6,8 @@ import {
   imgdocValue,
   getpastQuestion,
   searchpastQuestion,
-  getprevpastQuestion
+  getprevpastQuestion,
+  onFileChange
 } from '../../actions/UploadPquestionActions';
 import { connect } from 'react-redux';
 import { isNull } from 'util';
@@ -15,39 +16,9 @@ class Dashboard extends Component {
   componentWillMount() {
     this.props.getpastQuestion();
   }
-  onImageChange = e => {
-    const files = Array.from(e.target.files);
-    console.log(e.target.files);
-    console.log(files);
-    this.props.imgdocValue(true);
-    let formData = new FormData();
-
-    files.forEach = (file, i) => {
-      formData.append('images' + i, file);
-      console.log(formData);
-    };
-
-    this.props.uploadpquestionValue({
-      props: e.target.name,
-      value: formData
-    });
-  };
-
-  onDocChange = e => {
-    const files = Array.from(e.target.files);
-    this.props.imgdocValue(true);
-
-    let formData = new FormData();
-    files.map = (file, i) => {
-      formData.append('docs' + i, file);
-    };
-    this.props.uploadpquestionValue({
-      props: e.target.name,
-      value: formData
-    });
-  };
 
   submit = e => {
+    e.preventDefault();
     let {
       course_name,
       school,
@@ -59,16 +30,23 @@ class Dashboard extends Component {
       docs
     } = this.props;
 
-    docs.append('course_name', course_name);
-    docs.append('course_code', course_code);
-    docs.append('year', year);
-    docs.append('department', department);
-    docs.append('school', school);
-    docs.append('semester', semester);
-    console.log(images.entries(), docs);
-    this.props.uploadPquestion(docs);
+    let form_data = new FormData();
+    const imagess = [...images];
+    const docss = [...docs];
 
-    e.preventDefault();
+    imagess.forEach((image, i) => {
+      form_data.append('photos[]', image, image.name);
+    });
+    docss.forEach((doc, i) => {
+      form_data.append('docs[]', doc, doc.name);
+    });
+    form_data.append('course_code', course_code);
+    form_data.append('course_name', course_name);
+    form_data.append('school', school);
+    form_data.append('year', year);
+    form_data.append('department', department);
+    form_data.append('semester', semester);
+    this.props.uploadPquestion(form_data);
   };
 
   search = e => {
@@ -254,7 +232,7 @@ class Dashboard extends Component {
                             to={`dashboard/singleitem/${question.id}`}
                             style={{ textDecoration: 'none' }}
                           >
-                            <div className="list-group-item" key={question.id}>
+                            <div className="list-group-item " key={question.id}>
                               <h4 className="list-group-item-heading">
                                 {question.course_name}
                               </h4>
@@ -333,6 +311,7 @@ class Dashboard extends Component {
                             Course Name
                           </label>
                           <input
+                            required
                             type="text"
                             name="course_name"
                             className="form-control"
@@ -352,6 +331,7 @@ class Dashboard extends Component {
                             Course Code
                           </label>
                           <input
+                            required
                             type="text"
                             name="course_code"
                             className="form-control"
@@ -373,6 +353,7 @@ class Dashboard extends Component {
                             Department
                           </label>
                           <input
+                            required
                             type="text"
                             name="department"
                             className="form-control"
@@ -390,6 +371,7 @@ class Dashboard extends Component {
                         <div className="form-group">
                           <label className="bmd-label-floating">Semester</label>
                           <input
+                            required
                             type="text"
                             name="semester"
                             className="form-control"
@@ -409,6 +391,7 @@ class Dashboard extends Component {
                         <div className="form-group">
                           <label className="bmd-label-floating">School</label>
                           <input
+                            required
                             type="text"
                             name="school"
                             className="form-control"
@@ -426,6 +409,7 @@ class Dashboard extends Component {
                         <div className="form-group">
                           <label className="bmd-label-floating">Year</label>
                           <input
+                            required
                             type="text"
                             name="year"
                             className="form-control"
@@ -444,15 +428,31 @@ class Dashboard extends Component {
                       <div className="col-md-6 mb-3">
                         <div className="input-group">
                           <div className="input-group-prepend">
-                            <span className="input-group-text">Images</span>
+                            <span
+                              className="input-group-text"
+                              style={{
+                                backgroundColor: '#b256c1',
+                                borderRadius: 8,
+                                color: 'white'
+                              }}
+                            >
+                              Images
+                            </span>
                           </div>
                           <div className="custom-file">
                             <input
+                              required
+                              accept="image/*"
                               type="file"
                               name="images"
                               className="file-input"
                               id="inputGroupFile01"
-                              onChange={this.onImageChange.bind(this)}
+                              onChange={e =>
+                                this.props.onFileChange({
+                                  props: e.target.name,
+                                  value: e.target.files
+                                })
+                              }
                               multiple
                             />
                           </div>
@@ -461,15 +461,31 @@ class Dashboard extends Component {
                       <div className="col-md-6">
                         <div className="input-group">
                           <div className="input-group-prepend">
-                            <span className="input-group-text">Docs</span>
+                            <span
+                              className="input-group-text"
+                              style={{
+                                backgroundColor: '#b256c1',
+                                borderRadius: 8,
+                                color: 'white'
+                              }}
+                            >
+                              Docs
+                            </span>
                           </div>
                           <div className="custom-file">
                             <input
+                              required
+                              accept=".doc, .docx, .pdf, .txt, .rtf"
                               type="file"
                               name="docs"
                               className="file-input"
                               id="inputGroupFile02"
-                              onChange={this.onDocChange.bind(this)}
+                              onChange={e =>
+                                this.props.onFileChange({
+                                  props: e.target.name,
+                                  value: e.target.files
+                                })
+                              }
                               multiple
                             />
                           </div>
@@ -531,6 +547,7 @@ export default connect(
     imgdocValue,
     getpastQuestion,
     searchpastQuestion,
-    getprevpastQuestion
+    getprevpastQuestion,
+    onFileChange
   }
 )(Dashboard);

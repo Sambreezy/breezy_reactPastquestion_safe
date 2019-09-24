@@ -57,6 +57,7 @@ class ForgotPassword extends Component {
                       <div
                         onClick={e => this.props.forgotloginUser(forgotemail)}
                         className="btn btn-primary btn-link btn-wd btn-lg"
+                        style={{ backgroundColor: '#9c27b0', color: '#fff' }}
                       >
                         Send
                       </div>

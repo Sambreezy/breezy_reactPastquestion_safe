@@ -90,7 +90,12 @@ export const updatePix = (form_data, id) => {
           payload: null
         });
         dispatch(getuserInfo(id));
-        console.log(res.data);
+        Swal.fire({
+          type: 'success',
+          text: res.data
+            ? res.data.message
+            : 'Profile Picture updated Successfully'
+        });
       })
       .catch(err => {
         Swal.fire({

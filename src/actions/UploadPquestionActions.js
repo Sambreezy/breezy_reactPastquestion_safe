@@ -1,5 +1,6 @@
 import { UPLOAD_PQUESTION } from './types';
 import { UPLOADPQUESTION_VALUE } from './types';
+import { ONFILE_CHANGE } from './types';
 import { IMGDOC_VALUE } from './types';
 import { GET_PASTQUESTION } from './types';
 import { GET_PREVNEXT } from './types';
@@ -23,35 +24,20 @@ import { getuserInfo } from './UserActions';
 
 import axios from 'axios';
 
-export const uploadPquestion = (
-  course_name,
-  course_code,
-  department,
-  semester,
-  school,
-  year,
-  images,
-  docs
-) => {
-  let data = {
-    course_name,
-    course_code,
-    department,
-    semester,
-    school,
-    year,
-    images,
-    docs
-  };
-  console.log(data);
+export const uploadPquestion = form_data => {
   return dispatch => {
     axios
-      .post('https://pastquestions.xyz/api/v1/pastquestion/create', data)
+      .post('https://pastquestions.xyz/api/v1/pastquestion/create', form_data, {
+        headers: {
+          'content-type': 'multipart/form-data'
+        }
+      })
       .then(res => {
         dispatch({
           type: UPLOAD_PQUESTION,
           payload: res.data.message
         });
+        dispatch(getpastQuestion());
         Swal.fire({
           type: 'success',
           text: res.data
@@ -76,6 +62,15 @@ export const uploadpquestionValue = payload => {
   return dispatch => {
     dispatch({
       type: UPLOADPQUESTION_VALUE,
+      payload: payload
+    });
+  };
+};
+
+export const onFileChange = payload => {
+  return dispatch => {
+    dispatch({
+      type: ONFILE_CHANGE,
       payload: payload
     });
   };

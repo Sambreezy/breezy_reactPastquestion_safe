@@ -13,7 +13,8 @@ import {
   JS_VOTEUP,
   JS_VOTEDOWN,
   COMMENT_QUESTION,
-  CONTACT_US
+  CONTACT_US,
+  ONFILE_CHANGE
 } from '../actions/types';
 
 const initialState = {
@@ -58,6 +59,12 @@ export default function(state = initialState, action) {
         [action.payload.props]: action.payload.value
       };
 
+    case ONFILE_CHANGE:
+      return {
+        ...state,
+        [action.payload.props]: action.payload.value
+      };
+
     case IMGDOC_VALUE:
       return {
         ...state,
@@ -66,7 +73,15 @@ export default function(state = initialState, action) {
     case UPLOAD_PQUESTION:
       return {
         ...state,
-        pastquestion: action.payload.message
+        pastquestion: action.payload.message,
+        course_name: '',
+        year: '',
+        course_code: '',
+        school: '',
+        department: '',
+        semester: '',
+        images: [],
+        docs: []
       };
 
     case GET_PASTQUESTION:

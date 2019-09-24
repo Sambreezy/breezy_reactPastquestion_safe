@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-//import axios from 'axios';
 import {
   getuserInfo,
   usereditValue,
@@ -48,37 +47,6 @@ class User extends Component {
     this.props.updatePix(form_data, id);
   };
 
-  /**state = {
-    image: null
-  };
-
-  handleImageChange = e => {
-    this.setState({
-      image: e.target.files[0]
-    });
-  };*/
-
-  /** handleSubmit = e => {
-    e.preventDefault();
-    const { id } = this.props.user;
-    console.log(id);
-    let form_data = new FormData();
-    form_data.append('photos[]', this.state.image, this.state.image.name);
-    form_data.append('id', id);
-    let url = 'https://pastquestions.xyz/api/v1/user/edit';
-    axios
-      .post(url, form_data, {
-        headers: {
-          'content-type': 'multipart/form-data'
-        }
-      })
-      .then(res => {
-        console.log(res.data);
-        this.props.getuserInfo(id);
-      })
-      .catch(err => console.log(err));
-  };*/
-
   render() {
     const {
       singleuser,
@@ -89,11 +57,14 @@ class User extends Component {
       singleuserpicturename
     } = this.props;
 
-    let singleusername = singleuserpicturename.replace(
-      'public/profile/',
-      'https://pastquestions.xyz/storage/profile/'
-    );
-
+    let singleusername =
+      singleuserpicturename == null
+        ? ''
+        : singleuserpicturename.replace(
+            'public/profile/',
+            'https://pastquestions.xyz/storage/profile/'
+          );
+    console.log(userpix, 'i am userpix');
     return (
       <div className="profile-page sidebar-collapse">
         <div
@@ -111,13 +82,20 @@ class User extends Component {
                     <div className="avatar">
                       <a href={singleusername} target="self">
                         <img
-                          src={singleusername}
+                          src={
+                            singleuserpicturename == null && userpix == null
+                              ? './assets/img/noimage.jpg'
+                              : userpix == null
+                              ? singleusername
+                              : URL.createObjectURL(userpix)
+                          }
                           alt="Circle"
                           className="img-raised rounded-circle"
                           height="160"
                           width="180"
                         />
                       </a>
+
                       <i
                         style={{
                           position: 'relative',
@@ -125,11 +103,15 @@ class User extends Component {
                           right: 28,
                           cursor: 'pointer'
                         }}
+                        onClick={() => {
+                          document.getElementById('cameraIcon').click();
+                        }}
                         className="fa fa-camera fa-lg"
                       ></i>
                     </div>
-                    <form className="contact-form">
+                    <form className="contact-form" style={{ display: 'none' }}>
                       <input
+                        id="cameraIcon"
                         type="file"
                         name="userpix"
                         onChange={this.handleImageChange}

@@ -89,6 +89,7 @@
       window.addEventListener('scroll', function(event) {
         // To listen for event
         event.preventDefault();
+        console.log(window.scrollY, 'window.scrollY');
         if (window.scrollY <= 80) {
           document
             .getElementById('myNavbar')

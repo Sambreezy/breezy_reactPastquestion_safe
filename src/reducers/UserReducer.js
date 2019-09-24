@@ -37,7 +37,6 @@ export default function(state = initialState, action) {
       };
 
     case USER_EDITPIX:
-      console.log(action.payload);
       return {
         ...state,
         userpix: action.payload
@@ -46,7 +45,8 @@ export default function(state = initialState, action) {
     case UPDATE_PIX:
       return {
         ...state,
-        userpix: action.payload
+        userpix: action.payload,
+        singleuserpicturename: action.payload
       };
     default:
       return state;
