@@ -17,6 +17,23 @@ class Header extends Component {
       return { isAuthenticated: false };
     }
   }
+  collapseNavBar = () => {
+    document.getElementById('nav-main-button').classList.add('collapsed');
+    document.getElementById('openNav').classList.remove('show');
+  };
+
+  changeNavClass = () => {
+    if (
+      document
+        .getElementById('myNavbar')
+        .classList.contains('navbar-transparent')
+    ) {
+      document.getElementById('myNavbar').classList.add('breezy');
+      document
+        .getElementById('myNavbar')
+        .classList.remove('navbar-transparent');
+    }
+  };
 
   render() {
     const { isAuthenticated } = this.state;
@@ -35,6 +52,8 @@ class Header extends Component {
               </a>
             </Link>
             <button
+              onClick={this.changeNavClass.bind(this)}
+              id="nav-main-button"
               className="navbar-toggler"
               type="button"
               data-toggle="collapse"
@@ -49,7 +68,7 @@ class Header extends Component {
               <span className="navbar-toggler-icon" />
             </button>
           </div>
-          <div className="collapse navbar-collapse" id="openNav">
+          <div className="collapse navbar-show" id="openNav">
             {isAuthenticated ? (
               <ul className="navbar-nav ml-auto">
                 <li className="nav-item">
@@ -57,6 +76,7 @@ class Header extends Component {
                     <div
                       className="nav-link"
                       style={{ cursor: 'pointer', color: '#fff' }}
+                      onClick={this.collapseNavBar.bind(this)}
                     >
                       <i className="fas fa-tachometer-alt"></i> Dashboard
                     </div>
@@ -71,6 +91,7 @@ class Header extends Component {
                         color: '#fff',
                         textDecoration: 'none'
                       }}
+                      onClick={this.collapseNavBar.bind(this)}
                     >
                       <i className="fas fa-user"></i> Profile
                     </div>
@@ -93,6 +114,7 @@ class Header extends Component {
                     <div
                       className="nav-link"
                       style={{ cursor: 'pointer', color: '#fff' }}
+                      onClick={this.collapseNavBar.bind(this)}
                     >
                       <i className="fas fa-sign-in-alt"></i> Log In
                     </div>
@@ -103,20 +125,29 @@ class Header extends Component {
                     <div
                       className="nav-link"
                       style={{ cursor: 'pointer', color: '#fff' }}
+                      onClick={this.collapseNavBar.bind(this)}
                     >
                       <i className="fas fa-user-plus"></i> Sign Up
                     </div>
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <div className="nav-link" style={{ cursor: 'pointer' }}>
+                  <div
+                    className="nav-link"
+                    style={{ cursor: 'pointer' }}
+                    onClick={this.collapseNavBar.bind(this)}
+                  >
                     <a href="#about" style={{ color: '#fff' }}>
                       <i className="fas fa-file"></i> About Us
                     </a>
                   </div>
                 </li>
                 <li className="nav-item">
-                  <div className="nav-link" style={{ cursor: 'pointer' }}>
+                  <div
+                    className="nav-link"
+                    style={{ cursor: 'pointer' }}
+                    onClick={this.collapseNavBar.bind(this)}
+                  >
                     <a href="#contact" style={{ color: '#fff' }}>
                       <i className="fa fa-phone"></i> Contact Us
                     </a>
