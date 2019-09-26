@@ -86,11 +86,17 @@
 
     <script>
       // var nav = document.getElementsByClassName('navbar'); // Identify target
+      setTimeout(function() {
+        if (window.screen.width > 600) {
+          document.getElementById('openNav').classList.remove('collapse');
+        }
+        window.scrollTo(0, 0);
+      }, 500);
 
       window.addEventListener('scroll', function(event) {
         // To listen for event
         event.preventDefault();
-        if (document && window.scrollY <= 80) {
+        if (window.scrollY < 80) {
           document
             .getElementById('myNavbar')
             .classList.add('navbar-transparent');
@@ -101,10 +107,6 @@
             .getElementById('myNavbar')
             .classList.remove('navbar-transparent');
           document.getElementById('myNavbar').classList.add('breezy');
-        }
-
-        if (window.screen.width > 600) {
-          document.getElementById('openNav').classList.remove('collapse');
         }
       });
     </script>

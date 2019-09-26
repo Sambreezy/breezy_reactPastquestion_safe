@@ -7,17 +7,27 @@ import { withRouter } from 'react-router-dom';
 
 class UploadUser extends Component {
   componentWillMount() {
-    const { uploaded_by } = this.props.singleitem;
-    this.props.getuserInfo(uploaded_by);
+    const { id } = this.props.match.params;
+    this.props.getuserInfo(id);
   }
 
   render() {
-    const { singleuser, singleuserdocs, prev, next } = this.props;
+    const {
+      singleuser,
+      singleuserdocs,
+      prev,
+      next,
+      singleuserpicturename
+    } = this.props;
 
-    let singleuserpicturename = this.props.singleuserpicturename.replace(
-      'public/profile/',
-      'https://pastquestions.xyz/storage/profile/'
-    );
+    let singleusername =
+      singleuserpicturename == null
+        ? ''
+        : singleuserpicturename.replace(
+            'public/profile/',
+            'https://pastquestions.xyz/storage/profile/'
+          );
+    console.log(singleuserpicturename);
 
     return (
       <div className="profile-page sidebar-collapse">
@@ -36,7 +46,11 @@ class UploadUser extends Component {
                     <div className="avatar">
                       <a href={singleuserpicturename} target="self">
                         <img
-                          src={singleuserpicturename}
+                          src={
+                            singleuserpicturename == null
+                              ? '/assets/img/noimage.jpg'
+                              : singleusername
+                          }
                           alt="Circle"
                           className="img-raised rounded-circle"
                           height="160"

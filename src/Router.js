@@ -73,7 +73,7 @@ class Router extends Component {
             />
             <Route
               exact
-              path="/uploaduser"
+              path="/uploaduser/:id"
               render={() => (loggedIn ? <UploadUser /> : <Redirect to="/" />)}
             />
             <Route

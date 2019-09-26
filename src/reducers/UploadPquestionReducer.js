@@ -37,6 +37,7 @@ const initialState = {
   singleimages: [],
   singledocs: [],
   singlecomments: [],
+  singlecommentuser: [],
   firstquestions: [],
   deletedPqs: [],
   successdelete: '',
@@ -119,12 +120,14 @@ export default function(state = initialState, action) {
       };
 
     case GET_SINGLEITEM:
+      console.log(action.payload.comment, 'i am pay');
       return {
         ...state,
         singleitem: action.payload,
         singleimages: action.payload.image,
         singledocs: action.payload.document,
         singlecomments: action.payload.comment,
+        singlecommentuser: action.payload.comment.user_picture,
         uploaded_by: action.payload.uploaded_by
       };
 

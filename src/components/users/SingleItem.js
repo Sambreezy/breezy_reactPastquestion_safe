@@ -13,7 +13,7 @@ import {
 import { getuserInfo } from '../../actions/UserActions';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { isNull } from 'util';
+
 import { withRouter } from 'react-router-dom';
 
 class SingleItem extends Component {
@@ -57,13 +57,23 @@ class SingleItem extends Component {
       singledocs,
       singleimages,
       singlecomments,
-      prev,
-      next,
       comment,
       jsvoteupshow,
       jsvotedownshow
     } = this.props;
 
+    let usercommentpix = [];
+    for (let i = 0; i < singlecomments.length; i++) {
+      usercommentpix.push(
+        singlecomments[i].user_picture == null
+          ? ''
+          : singlecomments[i].user_picture.replace(
+              'public/profile/',
+              'https://pastquestions.xyz/storage/profile/'
+            )
+      );
+    }
+    console.log(usercommentpix, 'i am usercommentpix');
     return (
       <div className="landing-page sidebar-collapse">
         <div
@@ -115,45 +125,6 @@ class SingleItem extends Component {
                           </div>
                         ))}
                       </div>
-                      <div className="row">
-                        <div className="col-md-2.5 ml-auto mr-auto">
-                          <div id="progress">
-                            <ul className="pagination pagination-info mt-4">
-                              <li className="page-item">
-                                {isNull(prev) ? (
-                                  <span>
-                                    <i className="fa fa-chevron-left" /> prev
-                                  </span>
-                                ) : (
-                                  <Link
-                                    to={prev}
-                                    className="page-link"
-                                    style={{ color: '#187bff' }}
-                                  >
-                                    <span className="fa fa-chevron-left" /> prev
-                                  </Link>
-                                )}
-                              </li>
-                              <li className="page-item">
-                                {isNull(next) ? (
-                                  <span>
-                                    next <i className="fa fa-chevron-right" />
-                                  </span>
-                                ) : (
-                                  <Link
-                                    to={next}
-                                    className="page-link"
-                                    style={{ color: '#187bff' }}
-                                  >
-                                    next{' '}
-                                    <span className="fa fa-chevron-right" />
-                                  </Link>
-                                )}
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -191,45 +162,6 @@ class SingleItem extends Component {
                         </div>
                       </div>
                     ))}
-
-                    <div className="row">
-                      <div className="col-md-2.5 ml-auto mr-auto">
-                        <div id="progress">
-                          <ul className="pagination pagination-info mt-3">
-                            <li className="page-item">
-                              {isNull(prev) ? (
-                                <span>
-                                  <i className="fa fa-chevron-left" /> prev
-                                </span>
-                              ) : (
-                                <Link
-                                  to={prev}
-                                  className="page-link"
-                                  style={{ color: '#187bff' }}
-                                >
-                                  <span className="fa fa-chevron-left" /> prev
-                                </Link>
-                              )}
-                            </li>
-                            <li className="page-item">
-                              {isNull(next) ? (
-                                <span>
-                                  next <i className="fa fa-chevron-right" />
-                                </span>
-                              ) : (
-                                <Link
-                                  to={next}
-                                  className="page-link"
-                                  style={{ color: '#187bff' }}
-                                >
-                                  next <span className="fa fa-chevron-right" />
-                                </Link>
-                              )}
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -291,7 +223,10 @@ class SingleItem extends Component {
                     <span>
                       <b>Uploaded By:</b>
                     </span>{' '}
-                    <Link to="/uploaduser" style={{ textDecoration: 'none' }}>
+                    <Link
+                      to={`/uploaduser/${singleuser.id}`}
+                      style={{ textDecoration: 'none' }}
+                    >
                       <b>{singleuser.name}</b>
                     </Link>
                   </h6>
@@ -307,7 +242,7 @@ class SingleItem extends Component {
                       <h5 className="text-center title">
                         <i>Users' review</i>
                       </h5>
-                      {singlecomments.map(singlecomment => (
+                      {singlecomments.map((singlecomment, index) => (
                         <div style={{ paddingBottom: 1 }}>
                           <div className="card card-nav-tabs">
                             <div className="card-header card-header-primary">
@@ -316,7 +251,11 @@ class SingleItem extends Component {
                                   <div className="row">
                                     <div className="col-md-2">
                                       <img
-                                        src={singlecomment.user_picture}
+                                        src={
+                                          usercommentpix[index] == ''
+                                            ? '/assets/img/noimage.jpg'
+                                            : usercommentpix[index]
+                                        }
                                         alt="Circle"
                                         className="rounded-circle"
                                         style={{ height: 40, width: 40 }}
@@ -405,6 +344,7 @@ const mapStateToProps = state => ({
   singledocs: state.uploadpquestion.singledocs,
   singleimages: state.uploadpquestion.singleimages,
   singlecomments: state.uploadpquestion.singlecomments,
+  singlecommentuser: state.uploadpquestion.singlecommentuser,
   jsvoteupshow: state.uploadpquestion.jsvoteupshow,
   jsvotedownshow: state.uploadpquestion.jsvotedownshow,
   prev: state.uploadpquestion.prev,

@@ -64,7 +64,7 @@ class User extends Component {
             'public/profile/',
             'https://pastquestions.xyz/storage/profile/'
           );
-    console.log(userpix, 'i am userpix');
+    console.log(singleuserpicturename);
     return (
       <div className="profile-page sidebar-collapse">
         <div
@@ -84,7 +84,7 @@ class User extends Component {
                         <img
                           src={
                             singleuserpicturename == null && userpix == null
-                              ? './assets/img/noimage.jpg'
+                              ? '/assets/img/noimage.jpg'
                               : userpix == null
                               ? singleusername
                               : URL.createObjectURL(userpix)

@@ -40,7 +40,7 @@ class Header extends Component {
 
     return (
       <nav
-        className="navbar fixed-top navbar-expand-lg"
+        className="navbar fixed-top navbar-expand-lg navbar-transparent"
         color-on-scroll={100}
         id="myNavbar"
       >
@@ -100,7 +100,9 @@ class Header extends Component {
                 <li className="nav-item">
                   <div
                     className="nav-link"
-                    onClick={this.props.logoutUser}
+                    onClick={
+                      (this.collapseNavBar.bind(this), this.props.logoutUser)
+                    }
                     style={{ cursor: 'pointer', color: '#fff' }}
                   >
                     <i className="fas fa-sign-out-alt"></i> Log Out
@@ -112,6 +114,7 @@ class Header extends Component {
                 <li className="nav-item">
                   <Link to="/login">
                     <div
+                      id="login"
                       className="nav-link"
                       style={{ cursor: 'pointer', color: '#fff' }}
                       onClick={this.collapseNavBar.bind(this)}
@@ -123,6 +126,7 @@ class Header extends Component {
                 <li className="nav-item">
                   <Link to="/signup">
                     <div
+                      id="signup"
                       className="nav-link"
                       style={{ cursor: 'pointer', color: '#fff' }}
                       onClick={this.collapseNavBar.bind(this)}
