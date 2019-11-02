@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { loginValue } from '../../actions/loginActions';
 import { loginUser } from '../../actions/loginActions';
+import Spinner from '../reusables/Spinner';
 
 class Login extends Component {
   componentWillReceiveProps(nextProps) {
@@ -10,8 +11,9 @@ class Login extends Component {
       this.props.history.push('/dashboard');
     }
   }
+
   render() {
-    const { email, password } = this.props;
+    const { email, password, loading } = this.props;
     return (
       <div className="login-page sidebar-collapse">
         <div
@@ -87,15 +89,19 @@ class Login extends Component {
                     </div>
                     <div
                       className="footer text-center"
-                      style={{ marginBottom: 20 }}
+                      style={{ marginBottom: 50 }}
                     >
-                      <div
-                        onClick={e => this.props.loginUser(email, password)}
-                        className="btn btn-primary btn-link btn-wd btn-lg"
-                        style={{ backgroundColor: '#9c27b0', color: '#fff' }}
-                      >
-                        Log In
-                      </div>
+                      {loading ? (
+                        <Spinner />
+                      ) : (
+                        <div
+                          onClick={e => this.props.loginUser(email, password)}
+                          className="btn btn-primary btn-link btn-wd btn-lg"
+                          style={{ backgroundColor: '#9c27b0', color: '#fff' }}
+                        >
+                          Log In
+                        </div>
+                      )}
                     </div>
                   </form>
                 </div>
@@ -119,7 +125,8 @@ class Login extends Component {
 const mapStateToProps = state => ({
   email: state.login.email,
   password: state.login.password,
-  auth: state.login.auth
+  auth: state.login.auth,
+  loading: state.login.loading
 });
 
 export default connect(

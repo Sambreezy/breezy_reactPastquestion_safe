@@ -198,7 +198,9 @@ class SingleItem extends Component {
                         className="btn btn-primary btn-raised"
                         onClick={this.voteDislike.bind(this)}
                         style={{
-                          marginLeft: 30
+                          marginLeft: 30,
+                          backgroundColor: 'red',
+                          border: '1px solid red'
                         }}
                       >
                         Dislike <i className="fas fa-thumbs-down" />

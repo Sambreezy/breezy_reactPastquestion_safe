@@ -1,10 +1,14 @@
 import {
   LOGIN_VALUE,
   LOGIN_USER,
+  LOGIN_USER_TRUE,
+  LOGIN_USER_FALSE,
   LOGOUT_USER,
   INITIALIZE_USER,
   UPDATE_PASSWORD,
-  FORGOTLOGIN_USER
+  FORGOTLOGIN_USER,
+  FORGOT_USER_TRUE,
+  FORGOT_USER_FALSE
 } from '../actions/types';
 import axios from 'axios';
 
@@ -13,6 +17,7 @@ const initialState = {
   password: '',
   auth: false,
   loggedOut: true,
+  loading: false,
   token: {},
   user: {},
   forgotemail: '',
@@ -27,6 +32,16 @@ export default function(state = initialState, action) {
       return {
         ...state,
         [action.payload.props]: action.payload.value
+      };
+    case LOGIN_USER_TRUE:
+      return {
+        loading: action.payload
+      };
+    case LOGIN_USER_FALSE:
+      return {
+        loading: action.payload,
+        email: '',
+        password: ''
       };
     case LOGIN_USER:
       let logtoken = {
@@ -48,6 +63,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         auth: true,
+        loading: false,
         loggedOut: false,
         token: logtoken,
         user: loguser
@@ -70,6 +86,16 @@ export default function(state = initialState, action) {
     case FORGOTLOGIN_USER:
       return {
         ...state,
+        forgotemail: '',
+        loading: false
+      };
+    case FORGOT_USER_TRUE:
+      return {
+        loading: action.payload
+      };
+    case FORGOT_USER_FALSE:
+      return {
+        loading: action.payload,
         forgotemail: ''
       };
     case UPDATE_PASSWORD:

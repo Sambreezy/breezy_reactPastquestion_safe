@@ -7,6 +7,7 @@ import Login from './components/users/Login';
 import Signup from './components/users/Signup';
 import User from './components/users/User';
 import UploadUser from './components/users/UploadUser';
+import UploadQuestion from './components/users/UploadQuestion';
 import UserEdit from './components/users/UserEdit';
 import Dashboard from './components/users/Dashboard';
 import SingleItem from './components/users/SingleItem';
@@ -70,6 +71,13 @@ class Router extends Component {
               exact
               path="/user"
               render={() => (loggedIn ? <User /> : <Redirect to="/" />)}
+            />
+            <Route
+              exact
+              path="/uploadquestion"
+              render={() =>
+                loggedIn ? <UploadQuestion /> : <Redirect to="/" />
+              }
             />
             <Route
               exact

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { loginValue, forgotloginUser } from '../../actions/loginActions';
 import { connect } from 'react-redux';
+import Spinner from '../reusables/Spinner';
 
 class ForgotPassword extends Component {
   render() {
-    const { forgotemail } = this.props;
+    const { forgotemail, loading } = this.props;
     return (
       <div class="login-page sidebar-collapse">
         <div
@@ -54,13 +55,17 @@ class ForgotPassword extends Component {
                       className="footer text-center"
                       style={{ marginBottom: 20 }}
                     >
-                      <div
-                        onClick={e => this.props.forgotloginUser(forgotemail)}
-                        className="btn btn-primary btn-link btn-wd btn-lg"
-                        style={{ backgroundColor: '#9c27b0', color: '#fff' }}
-                      >
-                        Send
-                      </div>
+                      {loading ? (
+                        <Spinner />
+                      ) : (
+                        <div
+                          onClick={e => this.props.forgotloginUser(forgotemail)}
+                          className="btn btn-primary btn-link btn-wd btn-lg"
+                          style={{ backgroundColor: '#9c27b0', color: '#fff' }}
+                        >
+                          Send
+                        </div>
+                      )}
                     </div>
                   </form>
                 </div>
@@ -82,7 +87,8 @@ class ForgotPassword extends Component {
 }
 
 const mapStateToProps = state => ({
-  forgotemail: state.login.forgotemail
+  forgotemail: state.login.forgotemail,
+  loading: state.login.loading
 });
 
 export default connect(

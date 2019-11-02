@@ -14,7 +14,8 @@ import {
   JS_VOTEDOWN,
   COMMENT_QUESTION,
   CONTACT_US,
-  ONFILE_CHANGE
+  ONFILE_CHANGE,
+  GET_SCHOOLS
 } from '../actions/types';
 
 const initialState = {
@@ -33,6 +34,7 @@ const initialState = {
   next: '',
   search: '',
   results: [],
+  schools: [],
   singleitem: {},
   singleimages: [],
   singledocs: [],
@@ -64,6 +66,12 @@ export default function(state = initialState, action) {
       return {
         ...state,
         [action.payload.props]: action.payload.value
+      };
+
+    case GET_SCHOOLS:
+      return {
+        ...state,
+        schools: action.payload
       };
 
     case IMGDOC_VALUE:

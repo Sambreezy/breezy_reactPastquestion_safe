@@ -1,5 +1,12 @@
 import { LOGIN_USER } from './types';
-import { LOGOUT_USER, FORGOTLOGIN_USER } from './types';
+import { LOGIN_USER_TRUE } from './types';
+import { LOGIN_USER_FALSE } from './types';
+import {
+  LOGOUT_USER,
+  FORGOTLOGIN_USER,
+  FORGOT_USER_TRUE,
+  FORGOT_USER_FALSE
+} from './types';
 import { LOGIN_VALUE } from './types';
 import { INITIALIZE_USER, UPDATE_PASSWORD } from './types';
 import axios from 'axios';
@@ -11,6 +18,10 @@ export const loginUser = (email, password) => {
     password
   };
   return dispatch => {
+    dispatch({
+      type: LOGIN_USER_TRUE,
+      payload: true
+    });
     axios
       .post('https://pastquestions.xyz/api/v1/auth/login', data)
       .then(res => {
@@ -20,6 +31,10 @@ export const loginUser = (email, password) => {
         });
       })
       .catch(err => {
+        dispatch({
+          type: LOGIN_USER_FALSE,
+          payload: false
+        });
         Swal.fire({
           type: 'error',
           title: 'Oops...',
@@ -71,6 +86,10 @@ export const forgotloginUser = email => {
     email
   };
   return dispatch => {
+    dispatch({
+      type: FORGOT_USER_TRUE,
+      payload: true
+    });
     axios
       .post('https://pastquestions.xyz/api/v1/auth/forgot', data)
       .then(res => {
@@ -84,6 +103,10 @@ export const forgotloginUser = email => {
         });
       })
       .catch(err => {
+        dispatch({
+          type: FORGOT_USER_FALSE,
+          payload: false
+        });
         Swal.fire({
           type: 'error',
           title: 'Oops...',

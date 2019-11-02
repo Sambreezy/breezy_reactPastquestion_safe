@@ -5,6 +5,7 @@ import { IMGDOC_VALUE } from './types';
 import { GET_PASTQUESTION } from './types';
 import { GET_PREVNEXT } from './types';
 import { SEARCH_PASTQUESTION } from './types';
+import { GET_SCHOOLS } from './types';
 import { GET_SINGLEITEM } from './types';
 import { GET_FIRSTPASTQUESTION } from './types';
 import { VOTELIKE_QUESTION } from './types';
@@ -55,6 +56,20 @@ export const uploadPquestion = form_data => {
           confirmButtonText: 'Ok'
         });
       });
+  };
+};
+
+export const getjsonPlaceholder = () => {
+  return dispatch => {
+    axios
+      .get('https://jsonplaceholder.typicode.com/users')
+      .then(res => {
+        dispatch({
+          type: GET_SCHOOLS,
+          payload: res.data
+        });
+      })
+      .catch(err => console.log(err, 'i am err'));
   };
 };
 

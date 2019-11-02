@@ -42,7 +42,7 @@ class Landing extends Component {
                   target="blank"
                   className="btn btn-danger btn-raised btn-lg"
                 >
-                  <i className="fa fa-play" /> Watch video
+                  <i className="fas fa-download" /> Get App Now
                 </a>
               </div>
             </div>

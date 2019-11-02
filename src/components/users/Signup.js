@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { signupValue } from '../../actions/signupActions';
 import { signupUser } from '../../actions/signupActions';
+import Spinner from '../reusables/Spinner';
 
 class Signup extends Component {
   componentWillReceiveProps(nextProps) {
@@ -11,7 +12,7 @@ class Signup extends Component {
   }
 
   render() {
-    const { name, email, phone, password, confpassword } = this.props;
+    const { name, email, phone, password, confpassword, loading } = this.props;
 
     return (
       <div className="login-page sidebar-collapse">
@@ -147,21 +148,25 @@ class Signup extends Component {
                       className="footer text-center"
                       style={{ paddingBottom: 10 }}
                     >
-                      <div
-                        onClick={e =>
-                          this.props.signupUser(
-                            name,
-                            email,
-                            phone,
-                            password,
-                            confpassword
-                          )
-                        }
-                        className="btn btn-primary btn-link btn-wd btn-lg"
-                        style={{ backgroundColor: '#9c27b0', color: '#fff' }}
-                      >
-                        Sign Up
-                      </div>
+                      {loading ? (
+                        <Spinner />
+                      ) : (
+                        <div
+                          onClick={e =>
+                            this.props.signupUser(
+                              name,
+                              email,
+                              phone,
+                              password,
+                              confpassword
+                            )
+                          }
+                          className="btn btn-primary btn-link btn-wd btn-lg"
+                          style={{ backgroundColor: '#9c27b0', color: '#fff' }}
+                        >
+                          Sign Up
+                        </div>
+                      )}
                     </div>
                   </form>
                 </div>
@@ -188,6 +193,7 @@ const mapStateToProps = state => ({
   phone: state.signup.phone,
   password: state.signup.password,
   confpassword: state.signup.confpassword,
+  loading: state.signup.loading,
   reg: state.login.reg
 });
 

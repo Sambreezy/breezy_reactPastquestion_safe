@@ -83,6 +83,17 @@ class Header extends Component {
                   </Link>
                 </li>
                 <li className="nav-item">
+                  <Link to="/uploadquestion">
+                    <div
+                      className="nav-link"
+                      style={{ cursor: 'pointer', color: '#fff' }}
+                      onClick={this.collapseNavBar.bind(this)}
+                    >
+                      <i className="fas fa-upload"></i> Upload
+                    </div>
+                  </Link>
+                </li>
+                <li className="nav-item">
                   <Link to="/user">
                     <div
                       className="nav-link"
@@ -141,7 +152,7 @@ class Header extends Component {
                     style={{ cursor: 'pointer' }}
                     onClick={this.collapseNavBar.bind(this)}
                   >
-                    <a href="#about" style={{ color: '#fff' }}>
+                    <a href="/#about" style={{ color: '#fff' }}>
                       <i className="fas fa-file"></i> About Us
                     </a>
                   </div>
@@ -152,7 +163,7 @@ class Header extends Component {
                     style={{ cursor: 'pointer' }}
                     onClick={this.collapseNavBar.bind(this)}
                   >
-                    <a href="#contact" style={{ color: '#fff' }}>
+                    <a href="/#contact" style={{ color: '#fff' }}>
                       <i className="fa fa-phone"></i> Contact Us
                     </a>
                   </div>

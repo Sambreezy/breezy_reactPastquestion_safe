@@ -1,14 +1,15 @@
-import { SIGNUP_VALUE, SIGNUP_USER } from "../actions/types";
+import { SIGNUP_VALUE, SIGNUP_USER, SIGNUP_USER_TRUE } from '../actions/types';
 
 const initialState = {
-  name: "",
-  email: "",
-  phone: "",
-  password: "",
-  confpassword: "",
+  name: '',
+  email: '',
+  phone: '',
+  password: '',
+  confpassword: '',
+  loading: false,
   loggedOut: false,
   reg: false,
-  message: ""
+  message: ''
 };
 
 export default function(state = initialState, action) {
@@ -18,10 +19,15 @@ export default function(state = initialState, action) {
         ...state,
         [action.payload.props]: action.payload.value
       };
+    case SIGNUP_USER_TRUE:
+      return {
+        loading: action.payload
+      };
     case SIGNUP_USER:
       return {
         ...state,
         loggedOut: false,
+        loading: false,
         reg: true,
         message: action.payload
       };
