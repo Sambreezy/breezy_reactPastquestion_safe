@@ -3,10 +3,12 @@ import {
   USEREDIT_VALUE,
   UPDATE_USER,
   USER_EDITPIX,
-  UPDATE_PIX
-} from './types';
-import axios from 'axios';
-import Swal from 'sweetalert2';
+  UPDATE_PIX,
+  UPDATE_USER_TRUE,
+  UPDATE_USER_FALSE
+} from "./types";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 export const getuserInfo = id => {
   console.log(id);
@@ -20,7 +22,7 @@ export const getuserInfo = id => {
         });
         console.log(res.data.data);
       })
-      .catch(err => console.log(err, 'i am err'));
+      .catch(err => console.log(err, "i am err"));
   };
 };
 
@@ -42,26 +44,34 @@ export const updateUser = (name, phone, description, id) => {
   };
 
   return dispatch => {
+    dispatch({
+      type: UPDATE_USER_TRUE,
+      payload: true
+    });
     axios
-      .post('https://pastquestions.xyz/api/v1/user/edit', data)
+      .post("https://pastquestions.xyz/api/v1/user/edit", data)
       .then(res => {
         dispatch({
           type: UPDATE_USER,
           payload: res.data
         });
         Swal.fire({
-          type: 'success',
-          text: res.data ? res.data.message : 'Profile Updated Successfully'
+          type: "success",
+          text: res.data ? res.data.message : "Profile Updated Successfully"
         });
       })
       .catch(err => {
+        dispatch({
+          type: UPDATE_USER_FALSE,
+          payload: false
+        });
         Swal.fire({
-          type: 'error',
-          title: 'Oops...',
+          type: "error",
+          title: "Oops...",
           text: err.response
             ? err.response.data.message
-            : 'Something went wrong',
-          confirmButtonText: 'Ok'
+            : "Something went wrong",
+          confirmButtonText: "Ok"
         });
       });
   };
@@ -79,9 +89,9 @@ export const usereditPix = files => {
 export const updatePix = (form_data, id) => {
   return dispatch => {
     axios
-      .post('https://pastquestions.xyz/api/v1/user/edit', form_data, {
+      .post("https://pastquestions.xyz/api/v1/user/edit", form_data, {
         headers: {
-          'content-type': 'multipart/form-data'
+          "content-type": "multipart/form-data"
         }
       })
       .then(res => {
@@ -91,20 +101,20 @@ export const updatePix = (form_data, id) => {
         });
         dispatch(getuserInfo(id));
         Swal.fire({
-          type: 'success',
+          type: "success",
           text: res.data
             ? res.data.message
-            : 'Profile Picture updated Successfully'
+            : "Profile Picture updated Successfully"
         });
       })
       .catch(err => {
         Swal.fire({
-          type: 'error',
-          title: 'Oops...',
+          type: "error",
+          title: "Oops...",
           text: err.response
             ? err.response.data.message
-            : 'Something went wrong',
-          confirmButtonText: 'Ok'
+            : "Something went wrong",
+          confirmButtonText: "Ok"
         });
       });
   };

@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
   getfirstpastQuestion,
   uploadpquestionValue,
   sendusMessage
-} from '../../actions/UploadPquestionActions';
-import { connect } from 'react-redux';
+} from "../../actions/UploadPquestionActions";
+import { connect } from "react-redux";
+import Spinner from "../reusables/Spinner";
 
 class Landing extends Component {
   componentWillMount() {
@@ -19,7 +20,13 @@ class Landing extends Component {
     e.preventDefault();
   };
   render() {
-    const { firstquestions, all_name, all_email, all_message } = this.props;
+    const {
+      firstquestions,
+      all_name,
+      all_email,
+      all_message,
+      contactusloading
+    } = this.props;
     return (
       <div className="landing-page sidebar-collapse">
         <div
@@ -55,7 +62,7 @@ class Landing extends Component {
                 <div className="row">
                   <div className="col-md-8 ml-auto mr-auto">
                     <h2 className="title" style={{ paddingBottom: 15 }}>
-                      Recent Uploads{' '}
+                      Recent Uploads{" "}
                     </h2>
                     <div className="description">
                       <div className="list-group">
@@ -214,12 +221,16 @@ class Landing extends Component {
                     </div>
                     <div className="row">
                       <div className="col-md-4 ml-auto mr-auto text-center">
-                        <button
-                          onClick={this.sendMessage.bind(this)}
-                          className="btn btn-primary btn-raised"
-                        >
-                          Send Message
-                        </button>
+                        {contactusloading ? (
+                          <Spinner />
+                        ) : (
+                          <button
+                            onClick={this.sendMessage.bind(this)}
+                            className="btn btn-primary btn-raised"
+                          >
+                            Send Message
+                          </button>
+                        )}
                       </div>
                     </div>
                   </form>
@@ -241,12 +252,14 @@ class Landing extends Component {
 
 const mapStateToProps = state => ({
   firstquestions: state.uploadpquestion.firstquestions,
+  contactusloading: state.uploadpquestion.contactusloading,
   all_name: state.uploadpquestion.all_name,
   all_email: state.uploadpquestion.all_email,
   all_message: state.uploadpquestion.all_message
 });
 
-export default connect(
-  mapStateToProps,
-  { getfirstpastQuestion, uploadpquestionValue, sendusMessage }
-)(Landing);
+export default connect(mapStateToProps, {
+  getfirstpastQuestion,
+  uploadpquestionValue,
+  sendusMessage
+})(Landing);

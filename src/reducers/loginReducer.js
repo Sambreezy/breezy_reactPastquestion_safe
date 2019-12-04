@@ -6,24 +6,27 @@ import {
   LOGOUT_USER,
   INITIALIZE_USER,
   UPDATE_PASSWORD,
+  UPDATE_PASSWORD_TRUE,
+  UPDATE_PASSWORD_FALSE,
   FORGOTLOGIN_USER,
   FORGOT_USER_TRUE,
   FORGOT_USER_FALSE
-} from '../actions/types';
-import axios from 'axios';
+} from "../actions/types";
+import axios from "axios";
 
 const initialState = {
-  email: '',
-  password: '',
+  email: "",
+  password: "",
   auth: false,
   loggedOut: true,
   loading: false,
+  updatepasswordloading: false,
   token: {},
   user: {},
-  forgotemail: '',
-  current_password: '',
-  new_password: '',
-  confirm_password: ''
+  forgotemail: "",
+  current_password: "",
+  new_password: "",
+  confirm_password: ""
 };
 
 export default function(state = initialState, action) {
@@ -40,8 +43,8 @@ export default function(state = initialState, action) {
     case LOGIN_USER_FALSE:
       return {
         loading: action.payload,
-        email: '',
-        password: ''
+        email: "",
+        password: ""
       };
     case LOGIN_USER:
       let logtoken = {
@@ -86,7 +89,7 @@ export default function(state = initialState, action) {
     case FORGOTLOGIN_USER:
       return {
         ...state,
-        forgotemail: '',
+        forgotemail: "",
         loading: false
       };
     case FORGOT_USER_TRUE:
@@ -96,14 +99,25 @@ export default function(state = initialState, action) {
     case FORGOT_USER_FALSE:
       return {
         loading: action.payload,
-        forgotemail: ''
+        forgotemail: ""
       };
     case UPDATE_PASSWORD:
       return {
         ...state,
-        current_password: '',
-        new_password: '',
-        confirm_password: ''
+        current_password: "",
+        new_password: "",
+        confirm_password: "",
+        updatepasswordloading: false
+      };
+    case UPDATE_PASSWORD_TRUE:
+      return {
+        ...state,
+        updatepasswordloading: action.payload
+      };
+    case UPDATE_PASSWORD_FALSE:
+      return {
+        ...state,
+        updatepasswordloading: action.payload
       };
 
     default:
@@ -112,12 +126,12 @@ export default function(state = initialState, action) {
 }
 
 const storeToken = payload => {
-  localStorage.setItem('token', JSON.stringify(payload));
+  localStorage.setItem("token", JSON.stringify(payload));
 
-  axios.defaults.headers.common['Authorization'] =
-    'Bearer ' + payload.accessToken;
+  axios.defaults.headers.common["Authorization"] =
+    "Bearer " + payload.accessToken;
 };
 
 const storeUser = payload => {
-  localStorage.setItem('user', JSON.stringify(payload));
+  localStorage.setItem("user", JSON.stringify(payload));
 };

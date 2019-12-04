@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { loginValue, updatePassword } from '../../actions/loginActions';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { loginValue, updatePassword } from "../../actions/loginActions";
 import {
   getuserInfo,
   usereditValue,
   updateUser
-} from '../../actions/UserActions';
-import { withRouter } from 'react-router-dom';
+} from "../../actions/UserActions";
+import { withRouter } from "react-router-dom";
+import Spinner from "../reusables/Spinner";
 
 class UserEdit extends Component {
   componentWillMount() {
@@ -54,7 +55,9 @@ class UserEdit extends Component {
       singleuserdesc,
       current_password,
       new_password,
-      confirm_password
+      confirm_password,
+      updateuserloading,
+      updatepasswordloading
     } = this.props;
 
     return (
@@ -145,13 +148,20 @@ class UserEdit extends Component {
                         </div>
                       </div>
                       <div className="footer text-center">
-                        <div
-                          onClick={this.update.bind(this)}
-                          className="btn btn-primary btn-link btn-wd btn-lg"
-                          style={{ backgroundColor: '#9c27b0', color: '#fff' }}
-                        >
-                          Update
-                        </div>
+                        {updateuserloading ? (
+                          <Spinner />
+                        ) : (
+                          <div
+                            onClick={this.update.bind(this)}
+                            className="btn btn-primary btn-link btn-wd btn-lg"
+                            style={{
+                              backgroundColor: "#9c27b0",
+                              color: "#fff"
+                            }}
+                          >
+                            Update
+                          </div>
+                        )}
                       </div>
                     </form>
                   </div>
@@ -232,13 +242,20 @@ class UserEdit extends Component {
                         </div>
                       </div>
                       <div className="footer text-center">
-                        <div
-                          onClick={this.save.bind(this)}
-                          className="btn btn-primary btn-link btn-wd btn-lg"
-                          style={{ backgroundColor: '#9c27b0', color: '#fff' }}
-                        >
-                          Save
-                        </div>
+                        {updatepasswordloading ? (
+                          <Spinner />
+                        ) : (
+                          <div
+                            onClick={this.save.bind(this)}
+                            className="btn btn-primary btn-link btn-wd btn-lg"
+                            style={{
+                              backgroundColor: "#9c27b0",
+                              color: "#fff"
+                            }}
+                          >
+                            Save
+                          </div>
+                        )}
                       </div>
                     </form>
                   </div>
@@ -260,17 +277,22 @@ class UserEdit extends Component {
 
 const mapStateToProps = state => ({
   singleusername: state.user.singleusername,
+  updateuserloading: state.user.updateuserloading,
   singleuserphone: state.user.singleuserphone,
   singleuserdesc: state.user.singleuserdesc,
   singleuserid: state.user.singleuserid,
   current_password: state.login.current_password,
   new_password: state.login.new_password,
-  confirm_password: state.login.confirm_password
+  confirm_password: state.login.confirm_password,
+  updatepasswordloading: state.login.updatepasswordloading
 });
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    { getuserInfo, usereditValue, updateUser, loginValue, updatePassword }
-  )(UserEdit)
+  connect(mapStateToProps, {
+    getuserInfo,
+    usereditValue,
+    updateUser,
+    loginValue,
+    updatePassword
+  })(UserEdit)
 );

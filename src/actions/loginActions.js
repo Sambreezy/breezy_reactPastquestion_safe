@@ -1,16 +1,21 @@
-import { LOGIN_USER } from './types';
-import { LOGIN_USER_TRUE } from './types';
-import { LOGIN_USER_FALSE } from './types';
+import { LOGIN_USER } from "./types";
+import { LOGIN_USER_TRUE } from "./types";
+import { LOGIN_USER_FALSE } from "./types";
 import {
   LOGOUT_USER,
   FORGOTLOGIN_USER,
   FORGOT_USER_TRUE,
   FORGOT_USER_FALSE
-} from './types';
-import { LOGIN_VALUE } from './types';
-import { INITIALIZE_USER, UPDATE_PASSWORD } from './types';
-import axios from 'axios';
-import Swal from 'sweetalert2';
+} from "./types";
+import { LOGIN_VALUE } from "./types";
+import {
+  INITIALIZE_USER,
+  UPDATE_PASSWORD,
+  UPDATE_PASSWORD_TRUE,
+  UPDATE_PASSWORD_FALSE
+} from "./types";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 export const loginUser = (email, password) => {
   let data = {
@@ -23,7 +28,7 @@ export const loginUser = (email, password) => {
       payload: true
     });
     axios
-      .post('https://pastquestions.xyz/api/v1/auth/login', data)
+      .post("https://pastquestions.xyz/api/v1/auth/login", data)
       .then(res => {
         dispatch({
           type: LOGIN_USER,
@@ -36,12 +41,12 @@ export const loginUser = (email, password) => {
           payload: false
         });
         Swal.fire({
-          type: 'error',
-          title: 'Oops...',
+          type: "error",
+          title: "Oops...",
           text: err.response
             ? err.response.data.message
-            : 'Something went wrong',
-          confirmButtonText: 'Ok'
+            : "Something went wrong",
+          confirmButtonText: "Ok"
         });
       });
   };
@@ -58,7 +63,7 @@ export const loginValue = payload => {
 
 export const logoutUser = () => {
   return dispatch => {
-    window.location.replace('/');
+    window.location.replace("/");
     localStorage.clear();
     dispatch({
       type: LOGOUT_USER,
@@ -69,8 +74,8 @@ export const logoutUser = () => {
 
 export const initializeUser = () => {
   return dispatch => {
-    let token = localStorage.getItem('token');
-    let user = localStorage.getItem('user');
+    let token = localStorage.getItem("token");
+    let user = localStorage.getItem("user");
     if (token && user) {
       dispatch({
         type: INITIALIZE_USER,
@@ -91,15 +96,15 @@ export const forgotloginUser = email => {
       payload: true
     });
     axios
-      .post('https://pastquestions.xyz/api/v1/auth/forgot', data)
+      .post("https://pastquestions.xyz/api/v1/auth/forgot", data)
       .then(res => {
         dispatch({
           type: FORGOTLOGIN_USER,
           payload: res.data.message
         });
         Swal.fire({
-          type: 'success',
-          text: res.data ? res.data.message : 'Link Sent To Email'
+          type: "success",
+          text: res.data ? res.data.message : "Link Sent To Email"
         });
       })
       .catch(err => {
@@ -108,12 +113,12 @@ export const forgotloginUser = email => {
           payload: false
         });
         Swal.fire({
-          type: 'error',
-          title: 'Oops...',
+          type: "error",
+          title: "Oops...",
           text: err.response
             ? err.response.data.message
-            : 'Something went wrong',
-          confirmButtonText: 'Ok'
+            : "Something went wrong",
+          confirmButtonText: "Ok"
         });
       });
   };
@@ -133,26 +138,34 @@ export const updatePassword = (
   };
 
   return dispatch => {
+    dispatch({
+      type: UPDATE_PASSWORD_TRUE,
+      payload: true
+    });
     axios
-      .post('https://pastquestions.xyz/api/v1/auth/change', data)
+      .post("https://pastquestions.xyz/api/v1/auth/change", data)
       .then(res => {
         dispatch({
           type: UPDATE_PASSWORD,
           payload: res.data
         });
         Swal.fire({
-          type: 'success',
-          text: res.data ? res.data.message : 'Password Updated Successfully'
+          type: "success",
+          text: res.data ? res.data.message : "Password Updated Successfully"
         });
       })
       .catch(err => {
+        dispatch({
+          type: UPDATE_PASSWORD_FALSE,
+          payload: false
+        });
         Swal.fire({
-          type: 'error',
-          title: 'Oops...',
+          type: "error",
+          title: "Oops...",
           text: err.response
             ? err.response.data.message
-            : 'Something went wrong',
-          confirmButtonText: 'Ok'
+            : "Something went wrong",
+          confirmButtonText: "Ok"
         });
       });
   };

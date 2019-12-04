@@ -2,18 +2,22 @@ import {
   GET_USER,
   USEREDIT_VALUE,
   USER_EDITPIX,
-  UPDATE_PIX
-} from '../actions/types';
+  UPDATE_PIX,
+  UPDATE_USER_TRUE,
+  UPDATE_USER_FALSE,
+  UPDATE_USER
+} from "../actions/types";
 
 const initialState = {
-  singleusername: '',
-  singleuserphone: '',
-  singleuserdesc: '',
-  singleuserid: '',
+  singleusername: "",
+  singleuserphone: "",
+  singleuserdesc: "",
+  singleuserid: "",
+  updateuserloading: false,
   singleuser: {},
   singleuserdocs: [],
   userpix: null,
-  singleuserpicturename: ''
+  singleuserpicturename: ""
 };
 
 export default function(state = initialState, action) {
@@ -40,6 +44,21 @@ export default function(state = initialState, action) {
       return {
         ...state,
         userpix: action.payload
+      };
+    case UPDATE_USER_TRUE:
+      return {
+        ...state,
+        updateuserloading: action.payload
+      };
+    case UPDATE_USER_FALSE:
+      return {
+        ...state,
+        updateuserloading: action.payload
+      };
+    case UPDATE_USER:
+      return {
+        ...state,
+        updateuserloading: false
       };
 
     case UPDATE_PIX:

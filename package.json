@@ -9,6 +9,8 @@
     "classnames": "^2.2.6",
     "lodash": "^4.17.15",
     "react": "^16.4.1",
+    "react-datalist": "^4.0.0",
+    "react-datalist-input": "^1.2.12",
     "react-dom": "^16.4.1",
     "react-lodash": "^0.1.2",
     "react-redux": "^5.0.7",

@@ -1,17 +1,21 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
+//import ReactDatalist from "react-datalist";
+//var ReactDatalist = require('react-datalist');
+//import DataListInput from "react-datalist-input";
 import {
   uploadpquestionValue,
   uploadPquestion,
   onFileChange,
   getjsonPlaceholder
-} from '../../actions/UploadPquestionActions';
-import { connect } from 'react-redux';
-import debounce from 'lodash/debounce';
+} from "../../actions/UploadPquestionActions";
+import { connect } from "react-redux";
+import debounce from "lodash/debounce";
+import Spinner from "../reusables/Spinner";
 
 class UploadQuestion extends Component {
   changethename = debounce(e => {
     this.props.getjsonPlaceholder();
-  }, 2000);
+  }, 1000);
 
   submit = e => {
     e.preventDefault();
@@ -31,18 +35,19 @@ class UploadQuestion extends Component {
     const docss = [...docs];
 
     imagess.forEach((image, i) => {
-      form_data.append('photos[]', image, image.name);
+      form_data.append("photos[]", image, image.name);
     });
     docss.forEach((doc, i) => {
-      form_data.append('docs[]', doc, doc.name);
+      form_data.append("docs[]", doc, doc.name);
     });
-    form_data.append('course_code', course_code);
-    form_data.append('course_name', course_name);
-    form_data.append('school', school);
-    form_data.append('year', year);
-    form_data.append('department', department);
-    form_data.append('semester', semester);
+    form_data.append("course_code", course_code);
+    form_data.append("course_name", course_name);
+    form_data.append("school", school);
+    form_data.append("year", year);
+    form_data.append("department", department);
+    form_data.append("semester", semester);
     this.props.uploadPquestion(form_data);
+    console.log(school);
   };
 
   render() {
@@ -53,7 +58,8 @@ class UploadQuestion extends Component {
       school,
       department,
       semester,
-      schools
+      schools,
+      uploadquestionloading
     } = this.props;
     console.log(schools);
     return (
@@ -159,10 +165,13 @@ class UploadQuestion extends Component {
                     <div className="row">
                       <div className="col-md-6 mb-3">
                         <div className="form-group">
-                          <label className="bmd-label-floating">School</label>
+                          <label for="school" className="bmd-label-floating">
+                            School
+                          </label>
                           <input
                             required
                             type="text"
+                            id="school"
                             name="school"
                             className="form-control"
                             value={school}
@@ -177,7 +186,7 @@ class UploadQuestion extends Component {
                           />
                           <datalist id="schools">
                             {schools.map(school => (
-                              <option key={school.id} value={school.id} />
+                              <option key={school.id} value={school.username} />
                             ))}
                           </datalist>
                         </div>
@@ -209,9 +218,9 @@ class UploadQuestion extends Component {
                             <span
                               className="input-group-text"
                               style={{
-                                backgroundColor: '#b256c1',
+                                backgroundColor: "#b256c1",
                                 borderRadius: 8,
-                                color: 'white'
+                                color: "white"
                               }}
                             >
                               Images
@@ -242,9 +251,9 @@ class UploadQuestion extends Component {
                             <span
                               className="input-group-text"
                               style={{
-                                backgroundColor: '#b256c1',
+                                backgroundColor: "#b256c1",
                                 borderRadius: 8,
-                                color: 'white'
+                                color: "white"
                               }}
                             >
                               Docs
@@ -273,24 +282,20 @@ class UploadQuestion extends Component {
 
                     <div className="row">
                       <div className="col-md-4 ml-auto mr-auto text-center">
-                        <button
-                          className="btn btn-primary btn-raised"
-                          style={{ marginTop: 25 }}
-                          type="button"
-                          onClick={this.submit.bind(this)}
-                        >
-                          Upload
-                        </button>
+                        {uploadquestionloading ? (
+                          <Spinner />
+                        ) : (
+                          <button
+                            className="btn btn-primary btn-raised"
+                            style={{ marginTop: 25 }}
+                            type="button"
+                            onClick={this.submit.bind(this)}
+                          >
+                            Upload
+                          </button>
+                        )}
                       </div>
                     </div>
-                    <button
-                      className="btn btn-primary btn-raised"
-                      style={{ marginTop: 25 }}
-                      type="button"
-                      onClick={this.changethename.bind(this)}
-                    >
-                      Upload
-                    </button>
                   </form>
                 </div>
               </div>
@@ -317,15 +322,13 @@ const mapStateToProps = state => ({
   semester: state.uploadpquestion.semester,
   images: state.uploadpquestion.images,
   docs: state.uploadpquestion.docs,
+  uploadquestionloading: state.uploadpquestion.uploadquestionloading,
   schools: state.uploadpquestion.schools
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    uploadpquestionValue,
-    uploadPquestion,
-    onFileChange,
-    getjsonPlaceholder
-  }
-)(UploadQuestion);
+export default connect(mapStateToProps, {
+  uploadpquestionValue,
+  uploadPquestion,
+  onFileChange,
+  getjsonPlaceholder
+})(UploadQuestion);

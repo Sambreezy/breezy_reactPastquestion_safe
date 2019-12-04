@@ -1,10 +1,15 @@
 import {
   UPLOADPQUESTION_VALUE,
+  DELETE_QUESTION_TRUE,
+  DELETE_QUESTION_FALSE,
   UPLOAD_PQUESTION,
+  UPLOAD_QUESTION_TRUE,
+  UPLOAD_QUESTION_FALSE,
   IMGDOC_VALUE,
   GET_PASTQUESTION,
   GET_PREVNEXT,
   SEARCH_PASTQUESTION,
+  SEARCH_QUESTION_TRUE,
   GET_SINGLEITEM,
   GET_FIRSTPASTQUESTION,
   PQS_ARRAY,
@@ -13,26 +18,35 @@ import {
   JS_VOTEUP,
   JS_VOTEDOWN,
   COMMENT_QUESTION,
+  COMMENT_QUESTION_TRUE,
+  COMMENT_QUESTION_FALSE,
   CONTACT_US,
+  CONTACT_US_TRUE,
+  CONTACT_US_FALSE,
   ONFILE_CHANGE,
   GET_SCHOOLS
-} from '../actions/types';
+} from "../actions/types";
 
 const initialState = {
-  course_name: '',
-  year: '',
-  course_code: '',
-  school: '',
-  department: '',
-  semester: '',
-  pastquestion: '',
+  course_name: "",
+  year: "",
+  course_code: "",
+  school: "",
+  department: "",
+  semester: "",
+  pastquestion: "",
+  deleteloadng: false,
   uploading: false,
   images: [],
   docs: [],
   questions: [],
-  prev: '',
-  next: '',
-  search: '',
+  prev: "",
+  next: "",
+  search: "",
+  contactusloading: false,
+  searchquestionloading: false,
+  commentquestionloading: false,
+  uploadquestionloading: false,
   results: [],
   schools: [],
   singleitem: {},
@@ -42,15 +56,15 @@ const initialState = {
   singlecommentuser: [],
   firstquestions: [],
   deletedPqs: [],
-  successdelete: '',
-  comment: '',
-  singleitemid: '',
-  all_name: '',
-  all_email: '',
-  all_message: '',
-  jsvoteupshow: '',
-  jsvotedownshow: '',
-  uploaded_by: '',
+  successdelete: "",
+  comment: "",
+  singleitemid: "",
+  all_name: "",
+  all_email: "",
+  all_message: "",
+  jsvoteupshow: "",
+  jsvotedownshow: "",
+  uploaded_by: "",
   results_state: false
 };
 
@@ -83,14 +97,15 @@ export default function(state = initialState, action) {
       return {
         ...state,
         pastquestion: action.payload.message,
-        course_name: '',
-        year: '',
-        course_code: '',
-        school: '',
-        department: '',
-        semester: '',
+        course_name: "",
+        year: "",
+        course_code: "",
+        school: "",
+        department: "",
+        semester: "",
         images: [],
-        docs: []
+        docs: [],
+        uploadquestionloading: false
       };
 
     case GET_PASTQUESTION:
@@ -98,6 +113,16 @@ export default function(state = initialState, action) {
         ...state,
         questions: action.payload,
         results_state: false
+      };
+    case UPLOAD_QUESTION_TRUE:
+      return {
+        ...state,
+        uploadquestionloading: true
+      };
+    case UPLOAD_QUESTION_FALSE:
+      return {
+        ...state,
+        uploadquestionloading: false
       };
 
     case GET_FIRSTPASTQUESTION:
@@ -109,7 +134,20 @@ export default function(state = initialState, action) {
     case COMMENT_QUESTION:
       return {
         ...state,
-        comment: ''
+        comment: "",
+        commentquestionloading: false
+      };
+
+    case COMMENT_QUESTION_TRUE:
+      return {
+        ...state,
+        commentquestionloading: action.payload
+      };
+
+    case COMMENT_QUESTION_FALSE:
+      return {
+        ...state,
+        commentquestionloading: action.payload
       };
 
     case GET_PREVNEXT:
@@ -119,16 +157,24 @@ export default function(state = initialState, action) {
         next: action.payload.next_page_url
       };
 
+    case SEARCH_QUESTION_TRUE:
+      return {
+        ...state,
+        searchquestionloading: action.payload
+      };
+
     case SEARCH_PASTQUESTION:
       return {
         ...state,
         results: action.payload,
-        search: '',
-        results_state: action.payload1
+        search: "",
+        results_state: action.payload1,
+        questions: [],
+        searchquestionloading: false
       };
 
     case GET_SINGLEITEM:
-      console.log(action.payload.comment, 'i am pay');
+      console.log(action.payload.comment, "i am pay");
       return {
         ...state,
         singleitem: action.payload,
@@ -151,11 +197,22 @@ export default function(state = initialState, action) {
         ...state,
         deletedPqs: newArray
       };
+    case DELETE_QUESTION_TRUE:
+      return {
+        ...state,
+        deleteloading: action.payload
+      };
+    case DELETE_QUESTION_FALSE:
+      return {
+        ...state,
+        deleteloading: action.payload
+      };
 
     case DELETE_PQUESTION:
       return {
         ...state,
-        successdelete: action.payload
+        successdelete: action.payload,
+        deleteloading: false
       };
     case JS_VOTEUP:
       return {
@@ -175,9 +232,22 @@ export default function(state = initialState, action) {
     case CONTACT_US:
       return {
         ...state,
-        all_name: '',
-        all_email: '',
-        all_message: ''
+        all_name: "",
+        all_email: "",
+        all_message: "",
+        contactusloading: false
+      };
+
+    case CONTACT_US_TRUE:
+      return {
+        ...state,
+        contactusloading: action.payload
+      };
+
+    case CONTACT_US_FALSE:
+      return {
+        ...state,
+        contactusloading: action.payload
       };
 
     default:

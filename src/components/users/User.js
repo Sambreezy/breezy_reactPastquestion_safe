@@ -1,18 +1,19 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import {
   getuserInfo,
   usereditValue,
   usereditPix,
   updatePix
-} from '../../actions/UserActions';
+} from "../../actions/UserActions";
 import {
   getpastQuestion,
   deletepqsArray,
   deletePastquestion
-} from '../../actions/UploadPquestionActions';
-import { connect } from 'react-redux';
-import { isNull } from 'util';
+} from "../../actions/UploadPquestionActions";
+import { connect } from "react-redux";
+import { isNull } from "util";
+import Spinner from "../reusables/Spinner";
 
 class User extends Component {
   componentWillMount() {
@@ -26,7 +27,7 @@ class User extends Component {
     const { id } = this.props.user;
     let data = {
       past_questions: deletedPqs,
-      _method: 'DELETE'
+      _method: "DELETE"
     };
     this.props.deletePastquestion(data, id);
     e.preventDefault();
@@ -42,8 +43,8 @@ class User extends Component {
     const { id } = this.props.user;
     const { userpix } = this.props;
     let form_data = new FormData();
-    form_data.append('photos[]', userpix, userpix.name);
-    form_data.append('id', id);
+    form_data.append("photos[]", userpix, userpix.name);
+    form_data.append("id", id);
     this.props.updatePix(form_data, id);
   };
 
@@ -54,15 +55,16 @@ class User extends Component {
       prev,
       next,
       userpix,
-      singleuserpicturename
+      singleuserpicturename,
+      deleteloading
     } = this.props;
 
     let singleusername =
       singleuserpicturename == null
-        ? ''
+        ? ""
         : singleuserpicturename.replace(
-            'public/profile/',
-            'https://pastquestions.xyz/storage/profile/'
+            "public/profile/",
+            "https://pastquestions.xyz/storage/profile/"
           );
     console.log(singleuserpicturename);
     return (
@@ -84,7 +86,7 @@ class User extends Component {
                         <img
                           src={
                             singleuserpicturename == null && userpix == null
-                              ? '/assets/img/noimage.jpg'
+                              ? "/assets/img/noimage.jpg"
                               : userpix == null
                               ? singleusername
                               : URL.createObjectURL(userpix)
@@ -98,18 +100,18 @@ class User extends Component {
 
                       <i
                         style={{
-                          position: 'relative',
+                          position: "relative",
                           bottom: 13,
                           right: 28,
-                          cursor: 'pointer'
+                          cursor: "pointer"
                         }}
                         onClick={() => {
-                          document.getElementById('cameraIcon').click();
+                          document.getElementById("cameraIcon").click();
                         }}
                         className="fa fa-camera fa-lg"
                       ></i>
                     </div>
-                    <form className="contact-form" style={{ display: 'none' }}>
+                    <form className="contact-form" style={{ display: "none" }}>
                       <input
                         id="cameraIcon"
                         type="file"
@@ -120,7 +122,6 @@ class User extends Component {
                     </form>
                     <div className="name">
                       <h3 className="title">{singleuser.name}</h3>
-                      <h6>{singleuser.phone}</h6>
                     </div>
                   </div>
                 </div>
@@ -139,7 +140,7 @@ class User extends Component {
                 </div>
 
                 {userpix == null ? (
-                  ''
+                  ""
                 ) : (
                   <div id="buttons" class="cd-section">
                     <button
@@ -173,7 +174,7 @@ class User extends Component {
                                     this.props.deletepqsArray(e.target.value)
                                   }
                                   type="checkbox"
-                                />{' '}
+                                />{" "}
                                 {singleuserdoc.course_name}
                                 <span className="form-check-sign">
                                   <span className="check" />
@@ -184,15 +185,19 @@ class User extends Component {
                         </div>
                         <div className="row">
                           <div className="col-md-2.5 ml-auto mr-auto">
-                            <div id="buttons" class="cd-section">
-                              <button
-                                onClick={this.delete.bind(this)}
-                                class="btn btn-primary btn-sm"
-                                style={{ marginTop: 25 }}
-                              >
-                                Delete
-                              </button>
-                            </div>
+                            {deleteloading ? (
+                              <Spinner />
+                            ) : (
+                              <div id="buttons" class="cd-section">
+                                <button
+                                  onClick={this.delete.bind(this)}
+                                  class="btn btn-primary btn-sm"
+                                  style={{ marginTop: 25 }}
+                                >
+                                  Delete
+                                </button>
+                              </div>
+                            )}
                           </div>
                         </div>
                         <div
@@ -209,7 +214,7 @@ class User extends Component {
                                 <Link
                                   to={prev}
                                   className="page-link"
-                                  style={{ color: '#187bff' }}
+                                  style={{ color: "#187bff" }}
                                 >
                                   <span className="fa fa-chevron-left" /> prev
                                 </Link>
@@ -224,7 +229,7 @@ class User extends Component {
                                 <Link
                                   to={next}
                                   className="page-link"
-                                  style={{ color: '#187bff' }}
+                                  style={{ color: "#187bff" }}
                                 >
                                   next <span className="fa fa-chevron-right" />
                                 </Link>
@@ -265,18 +270,16 @@ const mapStateToProps = state => ({
   singleuserpicturename: state.user.singleuserpicturename,
   singleuserdocs: state.user.singleuserdocs,
   prev: state.uploadpquestion.prev,
-  next: state.uploadpquestion.next
+  next: state.uploadpquestion.next,
+  deleteloading: state.uploadpquestion.deleteloading
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    getuserInfo,
-    getpastQuestion,
-    deletepqsArray,
-    deletePastquestion,
-    usereditValue,
-    usereditPix,
-    updatePix
-  }
-)(User);
+export default connect(mapStateToProps, {
+  getuserInfo,
+  getpastQuestion,
+  deletepqsArray,
+  deletePastquestion,
+  usereditValue,
+  usereditPix,
+  updatePix
+})(User);

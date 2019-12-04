@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { getuserInfo } from '../../actions/UserActions';
-import { connect } from 'react-redux';
-import { isNull } from 'util';
-import { withRouter } from 'react-router-dom';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { getuserInfo } from "../../actions/UserActions";
+import { connect } from "react-redux";
+import { isNull } from "util";
+import { withRouter } from "react-router-dom";
 
 class UploadUser extends Component {
   componentWillMount() {
@@ -22,10 +22,10 @@ class UploadUser extends Component {
 
     let singleusername =
       singleuserpicturename == null
-        ? ''
+        ? ""
         : singleuserpicturename.replace(
-            'public/profile/',
-            'https://pastquestions.xyz/storage/profile/'
+            "public/profile/",
+            "https://pastquestions.xyz/storage/profile/"
           );
     console.log(singleuserpicturename);
 
@@ -48,7 +48,7 @@ class UploadUser extends Component {
                         <img
                           src={
                             singleuserpicturename == null
-                              ? '/assets/img/noimage.jpg'
+                              ? "/assets/img/noimage.jpg"
                               : singleusername
                           }
                           alt="Circle"
@@ -60,7 +60,6 @@ class UploadUser extends Component {
                     </div>
                     <div className="name">
                       <h3 className="title">{singleuser.name}</h3>
-                      <h6>{singleuser.phone}</h6>
                     </div>
                   </div>
                 </div>
@@ -80,8 +79,8 @@ class UploadUser extends Component {
                       <div className="text-center" style={{ marginTop: -20 }}>
                         {singleuserdocs.map(singleuserdoc => (
                           <Link
-                            to={`dashboard/singleitem/${singleuserdoc.id}`}
-                            style={{ textDecoration: 'none', color: 'black' }}
+                            to={`/dashboard/singleitem/${singleuserdoc.id}`}
+                            style={{ textDecoration: "none", color: "black" }}
                           >
                             <div key={singleuserdoc.id}>
                               <span style={{ fontSize: 18 }}>
@@ -104,7 +103,7 @@ class UploadUser extends Component {
                                   <Link
                                     to={prev}
                                     className="page-link"
-                                    style={{ color: '#187bff' }}
+                                    style={{ color: "#187bff" }}
                                   >
                                     <span className="fa fa-chevron-left" /> prev
                                   </Link>
@@ -119,9 +118,9 @@ class UploadUser extends Component {
                                   <Link
                                     to={next}
                                     className="page-link"
-                                    style={{ color: '#187bff' }}
+                                    style={{ color: "#187bff" }}
                                   >
-                                    next{' '}
+                                    next{" "}
                                     <span className="fa fa-chevron-right" />
                                   </Link>
                                 )}
@@ -159,10 +158,7 @@ const mapStateToProps = state => ({
 });
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    {
-      getuserInfo
-    }
-  )(UploadUser)
+  connect(mapStateToProps, {
+    getuserInfo
+  })(UploadUser)
 );

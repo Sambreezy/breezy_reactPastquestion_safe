@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
   getsingleItem,
   getpastQuestion,
@@ -9,12 +9,13 @@ import {
   uploadpquestionValue,
   getjsvoteup,
   getjsvotedown
-} from '../../actions/UploadPquestionActions';
-import { getuserInfo } from '../../actions/UserActions';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
+} from "../../actions/UploadPquestionActions";
+import { getuserInfo } from "../../actions/UserActions";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import Spinner from "../reusables/Spinner";
 
-import { withRouter } from 'react-router-dom';
+import { withRouter } from "react-router-dom";
 
 class SingleItem extends Component {
   componentWillMount() {
@@ -57,6 +58,7 @@ class SingleItem extends Component {
       singledocs,
       singleimages,
       singlecomments,
+      commentquestionloading,
       comment,
       jsvoteupshow,
       jsvotedownshow
@@ -66,14 +68,14 @@ class SingleItem extends Component {
     for (let i = 0; i < singlecomments.length; i++) {
       usercommentpix.push(
         singlecomments[i].user_picture == null
-          ? ''
+          ? ""
           : singlecomments[i].user_picture.replace(
-              'public/profile/',
-              'https://pastquestions.xyz/storage/profile/'
+              "public/profile/",
+              "https://pastquestions.xyz/storage/profile/"
             )
       );
     }
-    console.log(usercommentpix, 'i am usercommentpix');
+    console.log(usercommentpix, "i am usercommentpix");
     return (
       <div className="landing-page sidebar-collapse">
         <div
@@ -104,7 +106,7 @@ class SingleItem extends Component {
                 <div className="row">
                   <div className="col-md-8 ml-auto mr-auto">
                     <h2 className="title" style={{ paddingBottom: 15 }}>
-                      Images{' '}
+                      Images{" "}
                     </h2>
                     <div className="description">
                       <div className="row">
@@ -156,7 +158,7 @@ class SingleItem extends Component {
                             target="blank"
                             download
                           >
-                            <span className="fa fa-download" /> Download{' '}
+                            <span className="fa fa-download" /> Download{" "}
                             {singledoc.doc_name}
                           </a>
                         </div>
@@ -180,33 +182,33 @@ class SingleItem extends Component {
                 <div className="col-md-2.5 ml-auto mr-auto">
                   <div className="profile-tabs">
                     <h6 style={{ paddingTop: -6 }}>
-                      {' '}
+                      {" "}
                       <button
                         className="btn btn-primary btn-raised"
                         onClick={this.voteLike.bind(this)}
                       >
                         Like <i className="fas fa-thumbs-up" />
-                      </button>{' '}
+                      </button>{" "}
                       <span style={{ fontSize: 20, paddingLeft: 7 }}>
-                        {jsvoteupshow === '' ? (
+                        {jsvoteupshow === "" ? (
                           <b>{singleitem.vote_up}</b>
                         ) : (
                           <b>{jsvoteupshow}</b>
                         )}
-                      </span>{' '}
+                      </span>{" "}
                       <button
                         className="btn btn-primary btn-raised"
                         onClick={this.voteDislike.bind(this)}
                         style={{
                           marginLeft: 30,
-                          backgroundColor: 'red',
-                          border: '1px solid red'
+                          backgroundColor: "red",
+                          border: "1px solid red"
                         }}
                       >
                         Dislike <i className="fas fa-thumbs-down" />
-                      </button>{' '}
+                      </button>{" "}
                       <span style={{ fontSize: 20, paddingLeft: 7 }}>
-                        {jsvotedownshow === '' ? (
+                        {jsvotedownshow === "" ? (
                           <b>{singleitem.vote_down}</b>
                         ) : (
                           <b>{jsvotedownshow}</b>
@@ -224,10 +226,10 @@ class SingleItem extends Component {
                   <h6>
                     <span>
                       <b>Uploaded By:</b>
-                    </span>{' '}
+                    </span>{" "}
                     <Link
                       to={`/uploaduser/${singleuser.id}`}
-                      style={{ textDecoration: 'none' }}
+                      style={{ textDecoration: "none" }}
                     >
                       <b>{singleuser.name}</b>
                     </Link>
@@ -254,8 +256,8 @@ class SingleItem extends Component {
                                     <div className="col-md-2">
                                       <img
                                         src={
-                                          usercommentpix[index] == ''
-                                            ? '/assets/img/noimage.jpg'
+                                          usercommentpix[index] == ""
+                                            ? "/assets/img/noimage.jpg"
                                             : usercommentpix[index]
                                         }
                                         alt="Circle"
@@ -315,12 +317,16 @@ class SingleItem extends Component {
                     />
                     <div className="row" style={{ marginTop: 20 }}>
                       <div className="col-md-4 ml-auto mr-auto text-center">
-                        <button
-                          onClick={this.commentCall.bind(this)}
-                          className="btn btn-primary btn-raised"
-                        >
-                          Comment
-                        </button>
+                        {commentquestionloading ? (
+                          <Spinner />
+                        ) : (
+                          <button
+                            onClick={this.commentCall.bind(this)}
+                            className="btn btn-primary btn-raised"
+                          >
+                            Comment
+                          </button>
+                        )}
                       </div>
                     </div>
                   </form>
@@ -347,6 +353,7 @@ const mapStateToProps = state => ({
   singleimages: state.uploadpquestion.singleimages,
   singlecomments: state.uploadpquestion.singlecomments,
   singlecommentuser: state.uploadpquestion.singlecommentuser,
+  commentquestionloading: state.uploadpquestion.commentquestionloading,
   jsvoteupshow: state.uploadpquestion.jsvoteupshow,
   jsvotedownshow: state.uploadpquestion.jsvotedownshow,
   prev: state.uploadpquestion.prev,
@@ -357,19 +364,16 @@ const mapStateToProps = state => ({
 });
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    {
-      getsingleItem,
-      getpastQuestion,
-      votelikeQuestion,
-      votedislikeQuestion,
-      uploadparamValue,
-      commentQuestion,
-      uploadpquestionValue,
-      getuserInfo,
-      getjsvoteup,
-      getjsvotedown
-    }
-  )(SingleItem)
+  connect(mapStateToProps, {
+    getsingleItem,
+    getpastQuestion,
+    votelikeQuestion,
+    votedislikeQuestion,
+    uploadparamValue,
+    commentQuestion,
+    uploadpquestionValue,
+    getuserInfo,
+    getjsvoteup,
+    getjsvotedown
+  })(SingleItem)
 );
