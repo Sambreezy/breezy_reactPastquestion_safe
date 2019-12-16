@@ -29,7 +29,7 @@ class SingleItem extends Component {
     const { id } = this.props.match.params;
     this.props.votelikeQuestion(id);
     const { singleitem } = this.props;
-    let vote_up = (singleitem.vote_up += 10);
+    let vote_up = (singleitem.vote_up += 1);
     this.props.getjsvoteup(vote_up);
     e.preventDefault();
   };
@@ -38,7 +38,7 @@ class SingleItem extends Component {
     const { id } = this.props.match.params;
     this.props.votedislikeQuestion(id);
     const { singleitem } = this.props;
-    let vote_down = (singleitem.vote_down += 10);
+    let vote_down = (singleitem.vote_down += 1);
     this.props.getjsvotedown(vote_down);
     e.preventDefault();
   };
@@ -364,16 +364,19 @@ const mapStateToProps = state => ({
 });
 
 export default withRouter(
-  connect(mapStateToProps, {
-    getsingleItem,
-    getpastQuestion,
-    votelikeQuestion,
-    votedislikeQuestion,
-    uploadparamValue,
-    commentQuestion,
-    uploadpquestionValue,
-    getuserInfo,
-    getjsvoteup,
-    getjsvotedown
-  })(SingleItem)
+  connect(
+    mapStateToProps,
+    {
+      getsingleItem,
+      getpastQuestion,
+      votelikeQuestion,
+      votedislikeQuestion,
+      uploadparamValue,
+      commentQuestion,
+      uploadpquestionValue,
+      getuserInfo,
+      getjsvoteup,
+      getjsvotedown
+    }
+  )(SingleItem)
 );
